@@ -5,6 +5,22 @@
 
 ---
 
+## 🖼️ Platform Visual Interface & Screenshots
+
+### 1. Quality Engineering & RAG Evaluation Suite
+![KnowledgeOps RAG Evaluation Suite](docs/screenshots/dashboard.png)
+
+### 2. Document Ingestion, Processing & Indexing
+![Document Ingestion & Management](docs/screenshots/documents.png)
+
+### 3. Vector Search & Reranking Inspection
+![Semantic Vector Search](docs/screenshots/search.png)
+
+### 4. Grounded RAG Q&A with Citation Verification
+![Grounded RAG Q&A](docs/screenshots/Query.png)
+
+---
+
 ## 📊 RAG Benchmark Dataset v2 Results (30 Cases across 6 Technical Domains)
 
 KnowledgeOps features a multi-document quality engineering evaluation engine (`backend/run_benchmark.py` & `/evaluations/benchmark/run`). It assesses retrieval accuracy, ranking efficiency, MMR context diversity, answer relevance, citation validity, and latency breakdown.
