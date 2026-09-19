@@ -1,7 +1,7 @@
 """
-KnowledgeOps Benchmark Dataset v2
+KnowledgeOps Benchmark Dataset v2 (Expanded 30-Case Multi-Document Suite)
 
-Includes 20 multi-document evaluation cases across 6 technical domain documents:
+Includes 30 multi-document evaluation cases across 6 technical domain documents:
 1. 01_cloud_cost_optimization.pdf
 2. 02_cybersecurity_basics.pdf
 3. 03_data_engineering_pipeline.pdf
@@ -15,14 +15,16 @@ from __future__ import annotations
 from typing import Any
 from pydantic import BaseModel, Field
 
+
 class BenchmarkCaseV2(BaseModel):
     id: str
     question: str
     expected_documents: list[str]
     expected_topics: list[str] = Field(default_factory=list)
-    category: str  # direct_retrieval, semantic_retrieval, distractor, cross_document, multi_hop, citation_verification
+    category: str  # direct_retrieval, semantic_retrieval, distractor, cross_document, multi_hop, citation_verification, insufficient_evidence
     difficulty: str  # easy, medium, hard
     expected_answer: str | None = None
+
 
 BENCHMARK_DOCUMENTS_V2 = {
     "01_cloud_cost_optimization.pdf": {
@@ -100,7 +102,7 @@ BENCHMARK_CASES_V2: list[dict[str, Any]] = [
         "id": "case_01",
         "question": "What does rightsizing mean in cloud infrastructure?",
         "expected_documents": ["01_cloud_cost_optimization.pdf"],
-        "expected_topics": ["rightsizing", "capacity", "cost"],
+        "expected_topics": ["rightsizing", "capacity", "lowest cost"],
         "category": "direct_retrieval",
         "difficulty": "easy",
         "expected_answer": "Rightsizing in cloud infrastructure means matching instance types and capacity to workload requirements at the lowest possible cost."
@@ -156,7 +158,7 @@ BENCHMARK_CASES_V2: list[dict[str, Any]] = [
         "id": "case_07",
         "question": "What reliability practices are shared between data pipelines and distributed network services?",
         "expected_documents": ["03_data_engineering_pipeline.pdf", "05_networking_fundamentals.pdf"],
-        "expected_topics": ["reliability", "idempotency", "retries", "timeouts"],
+        "expected_topics": ["idempotent", "health checks", "rate limiting", "backoff"],
         "category": "cross_document",
         "difficulty": "hard",
         "expected_answer": "Shared reliability practices include idempotent operations, health checks, rate limiting, and exponential backoff retry policies."
@@ -165,7 +167,7 @@ BENCHMARK_CASES_V2: list[dict[str, Any]] = [
         "id": "case_08",
         "question": "How does observability differ between an ML system and a data pipeline?",
         "expected_documents": ["06_machine_learning_evaluation.pdf", "03_data_engineering_pipeline.pdf"],
-        "expected_topics": ["observability", "drift", "schema", "metrics"],
+        "expected_topics": ["observability", "concept drift", "schema", "metrics"],
         "category": "cross_document",
         "difficulty": "hard",
         "expected_answer": "Data pipeline observability focuses on schema contracts, latency, and queue depth, while ML observability adds concept drift and prediction distribution tracking."
@@ -174,7 +176,7 @@ BENCHMARK_CASES_V2: list[dict[str, Any]] = [
         "id": "case_09",
         "question": "What security practices should be applied to APIs that process application data?",
         "expected_documents": ["02_cybersecurity_basics.pdf"],
-        "expected_topics": ["TLS encryption", "vaults", "OAuth tokens", "rate limiting"],
+        "expected_topics": ["TLS encryption", "secret management", "OAuth tokens", "rate limiting"],
         "category": "cross_document",
         "difficulty": "medium",
         "expected_answer": "Security practices include TLS encryption, secret vaults, scope-based OAuth tokens, input validation, and rate limiting."
@@ -195,7 +197,7 @@ BENCHMARK_CASES_V2: list[dict[str, Any]] = [
         "expected_topics": ["operational metrics", "latency", "error rate", "bandwidth"],
         "category": "cross_document",
         "difficulty": "hard",
-        "expected_answer": "Useful shared metrics include error rates, processing latency, throughput, resource utilization, and throughput growth rates."
+        "expected_answer": "Useful shared metrics include error rates, processing latency, throughput, resource utilization, and storage growth rates."
     },
     {
         "id": "case_12",
@@ -212,10 +214,10 @@ BENCHMARK_CASES_V2: list[dict[str, Any]] = [
         "id": "case_13",
         "question": "A service processes analytical data through an API. What practices should be used to protect the API, make the pipeline retry-safe, and monitor failures?",
         "expected_documents": ["02_cybersecurity_basics.pdf", "03_data_engineering_pipeline.pdf", "05_networking_fundamentals.pdf"],
-        "expected_topics": ["protect API", "idempotency", "timeouts", "monitoring"],
+        "expected_topics": ["protect the API", "retry-safe", "monitor failures"],
         "category": "multi_hop",
         "difficulty": "hard",
-        "expected_answer": "Use TLS and rate limiting for protection, idempotent handlers with exponential backoff for retries, and explicit timeouts with dead-letter queue metrics."
+        "expected_answer": "Use TLS and rate limiting for API protection, idempotent handlers with exponential backoff for retries, and explicit timeouts with dead-letter queue metrics."
     },
     {
         "id": "case_14",
@@ -241,7 +243,7 @@ BENCHMARK_CASES_V2: list[dict[str, Any]] = [
         "id": "case_16",
         "question": "What is cohort analysis?",
         "expected_documents": ["04_product_analytics.pdf"],
-        "expected_topics": ["cohort analysis", "user retention"],
+        "expected_topics": ["cohort analysis", "retention"],
         "category": "distractor",
         "difficulty": "easy",
         "expected_answer": "Cohort analysis divides users into groups based on shared characteristics to study behavior over time."
@@ -259,7 +261,7 @@ BENCHMARK_CASES_V2: list[dict[str, Any]] = [
         "id": "case_18",
         "question": "What is precision in classification?",
         "expected_documents": ["06_machine_learning_evaluation.pdf"],
-        "expected_topics": ["precision", "classification"],
+        "expected_topics": ["precision", "positive predictions"],
         "category": "distractor",
         "difficulty": "easy",
         "expected_answer": "Precision measures the proportion of positive predictions that were actually correct."
@@ -281,5 +283,97 @@ BENCHMARK_CASES_V2: list[dict[str, Any]] = [
         "category": "distractor",
         "difficulty": "easy",
         "expected_answer": "Least privilege grants users or services only the minimum necessary permissions to perform their tasks."
+    },
+
+    # ADDITIONAL DIFFICULT MULTI-HOP & CROSS-DOCUMENT CASES (21 - 30)
+    {
+        "id": "case_21",
+        "question": "How can network circuit breakers and pipeline dead-letter queues be combined to handle persistent external API outages?",
+        "expected_documents": ["03_data_engineering_pipeline.pdf", "05_networking_fundamentals.pdf"],
+        "expected_topics": ["circuit breakers", "dead-letter queues", "outages"],
+        "category": "multi_hop",
+        "difficulty": "hard",
+        "expected_answer": "Circuit breakers trip open to stop overloading unhealthy dependencies, while dead-letter queues store unparseable or failed records for asynchronous retry."
+    },
+    {
+        "id": "case_22",
+        "question": "A company wants to optimize cloud infrastructure costs while preventing API rate-limiting and security exposure. What strategies should be implemented?",
+        "expected_documents": ["01_cloud_cost_optimization.pdf", "02_cybersecurity_basics.pdf"],
+        "expected_topics": ["cost optimization", "rate limiting", "security"],
+        "category": "multi_hop",
+        "difficulty": "hard",
+        "expected_answer": "Implement rightsizing and auto-scaling for cost efficiency alongside scope-based OAuth tokens, TLS, and API rate limiting for security."
+    },
+    {
+        "id": "case_23",
+        "question": "How do product retention metrics (like DAU/MAU) inform machine learning model monitoring for feature drift?",
+        "expected_documents": ["04_product_analytics.pdf", "06_machine_learning_evaluation.pdf"],
+        "expected_topics": ["DAU/MAU", "concept drift", "feature drift"],
+        "category": "cross_document",
+        "difficulty": "hard",
+        "expected_answer": "Product analytics stickiness metrics (DAU/MAU) reveal user behavior shifts that signal feature data drift or concept drift in machine learning models."
+    },
+    {
+        "id": "case_24",
+        "question": "What practices protect an analytical pipeline against schema drift, unauthorized access, and network starvation?",
+        "expected_documents": ["02_cybersecurity_basics.pdf", "03_data_engineering_pipeline.pdf", "05_networking_fundamentals.pdf"],
+        "expected_topics": ["schema drift", "unauthorized access", "network starvation"],
+        "category": "multi_hop",
+        "difficulty": "hard",
+        "expected_answer": "Enforce data contracts for schema validation, OAuth tokens and TLS for access control, and explicit request timeouts with circuit breakers against starvation."
+    },
+    {
+        "id": "case_25",
+        "question": "How does input sanitization in web security differ from data contract schema validation in ETL pipelines?",
+        "expected_documents": ["02_cybersecurity_basics.pdf", "03_data_engineering_pipeline.pdf"],
+        "expected_topics": ["input sanitization", "data contract", "schema validation"],
+        "category": "cross_document",
+        "difficulty": "medium",
+        "expected_answer": "Input sanitization prevents injection attacks like SQLi/XSS, whereas data contracts enforce structural schemas and SLA agreements between data producers and consumers."
+    },
+    {
+        "id": "case_26",
+        "question": "What cloud storage tiering policies should be applied to cold dead-letter queue records?",
+        "expected_documents": ["01_cloud_cost_optimization.pdf", "03_data_engineering_pipeline.pdf"],
+        "expected_topics": ["storage tiering", "dead-letter queues"],
+        "category": "cross_document",
+        "difficulty": "medium",
+        "expected_answer": "Move dead-letter queue records to lower-cost cold or archival storage classes after initial investigation to optimize cloud costs."
+    },
+    {
+        "id": "case_27",
+        "question": "Why is cross-validation insufficient for detecting concept drift in production ML models?",
+        "expected_documents": ["06_machine_learning_evaluation.pdf"],
+        "expected_topics": ["cross-validation", "concept drift", "production"],
+        "category": "distractor",
+        "difficulty": "medium",
+        "expected_answer": "Cross-validation evaluates historical training data generalization but cannot detect real-time feature data drift or concept drift in production distributions."
+    },
+    {
+        "id": "case_28",
+        "question": "What shared operational metrics should be monitored to detect both networking bottleneck timeouts and data ingestion queue lag?",
+        "expected_documents": ["03_data_engineering_pipeline.pdf", "05_networking_fundamentals.pdf"],
+        "expected_topics": ["operational metrics", "latency", "queue depth", "error rate"],
+        "category": "multi_hop",
+        "difficulty": "hard",
+        "expected_answer": "Shared metrics include processing latency, request error rates, throughput, and queue depth."
+    },
+    {
+        "id": "case_29",
+        "question": "How can A/B experimentation funnels be used to validate cloud auto-scaling cost savings?",
+        "expected_documents": ["01_cloud_cost_optimization.pdf", "04_product_analytics.pdf"],
+        "expected_topics": ["experimentation", "auto-scaling", "cost savings"],
+        "category": "cross_document",
+        "difficulty": "hard",
+        "expected_answer": "A/B experimentation frameworks evaluate statistical significance of feature changes while tracking infrastructure CPU utilization and monthly cost per active tenant."
+    },
+    {
+        "id": "case_30",
+        "question": "What quantum encryption algorithm is used by KnowledgeOps for satellite network communication?",
+        "expected_documents": [],
+        "expected_topics": [],
+        "category": "insufficient_evidence",
+        "difficulty": "hard",
+        "expected_answer": "I don't have enough information in the provided knowledge base to answer this."
     }
 ]

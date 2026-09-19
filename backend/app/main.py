@@ -10,7 +10,7 @@ from typing import Any
 from uuid import uuid4
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, File, HTTPException, Response, UploadFile
+from fastapi import FastAPI, File, HTTPException, Query, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -251,7 +251,13 @@ async def get_benchmark_dataset_v2() -> dict[str, Any]:
 
 
 @app.post("/evaluations/benchmark/run")
-async def run_benchmark_v2_endpoint(top_k: int = 5, generate_answers: bool = True) -> dict[str, Any]:
+async def run_benchmark_v2_endpoint(
+    top_k: int = Query(default=5, ge=1, le=50),
+    generate_answers: bool = Query(default=True),
+    mmr_enabled: bool = Query(default=True),
+    mmr_lambda: float = Query(default=0.70, ge=0.0, le=1.0),
+    candidate_pool_size: int = Query(default=15, ge=1, le=50),
+) -> dict[str, Any]:
     from app.benchmark_dataset_v2 import BENCHMARK_CASES_V2, BENCHMARK_DOCUMENTS_V2
     from app.evaluations import EvaluationCase
 
@@ -280,23 +286,44 @@ async def run_benchmark_v2_endpoint(top_k: int = 5, generate_answers: bool = Tru
                 "score": round(0.5 + (0.1 * min(matches, 4)), 2),
                 "text": doc_info["content"],
             })
-        results, _ = rerank(question, candidates, final_count=limit)
+        results, _ = rerank(
+            query=question,
+            candidates=candidates,
+            final_count=limit,
+            mmr_enabled=mmr_enabled,
+            mmr_lambda=mmr_lambda,
+            candidate_pool_size=candidate_pool_size,
+        )
         return results
 
     async def fallback_generate(question: str, sources: list[dict[str, Any]]) -> str:
         if not sources:
             return "I don't have enough information in the provided knowledge base to answer this."
-        doc_info = BENCHMARK_DOCUMENTS_V2.get(sources[0].get("filename", ""))
-        if doc_info:
-            snippet = doc_info["content"].split(". ")[1] if ". " in doc_info["content"] else doc_info["content"]
-            return f"{snippet}. [1]"
-        return f"{sources[0].get('text', '')[:120]} [1]"
+        seen_docs: dict[str, int] = {}
+        snippets: list[str] = []
+        for idx, src in enumerate(sources, 1):
+            fname = src.get("filename", "")
+            if fname and fname not in seen_docs:
+                seen_docs[fname] = idx
+                doc_info = BENCHMARK_DOCUMENTS_V2.get(fname)
+                if doc_info:
+                    sentences = [s.strip() for s in doc_info["content"].split(". ") if len(s.strip()) > 15]
+                    snip = sentences[1] if len(sentences) > 1 else sentences[0]
+                    snippets.append(f"{snip}. [{idx}]")
+        return " ".join(snippets) if snippets else f"{sources[0].get('text', '')[:120]} [1]"
 
     async def live_retrieve(question: str, limit: int) -> list[dict[str, Any]]:
         try:
             query_vector = (await embed_texts([question], task_type="RETRIEVAL_QUERY"))[0]
-            candidates = search_document_chunks(query_vector, max(12, limit))
-            results, _ = rerank(question, candidates, limit)
+            candidates = search_document_chunks(query_vector, max(candidate_pool_size, limit))
+            results, _ = rerank(
+                query=question,
+                candidates=candidates,
+                final_count=limit,
+                mmr_enabled=mmr_enabled,
+                mmr_lambda=mmr_lambda,
+                candidate_pool_size=candidate_pool_size,
+            )
             return results if results else await fallback_retrieve(question, limit)
         except Exception:
             return await fallback_retrieve(question, limit)
@@ -312,6 +339,9 @@ async def run_benchmark_v2_endpoint(top_k: int = 5, generate_answers: bool = Tru
         cases=cases,
         limit=top_k,
         top_k=top_k,
+        mmr_enabled=mmr_enabled,
+        mmr_lambda=mmr_lambda,
+        candidate_pool_size=candidate_pool_size,
         generate_answers=generate_answers,
     )
 

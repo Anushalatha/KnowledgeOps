@@ -14,8 +14,8 @@ from app.evaluations import (
 
 
 def test_benchmark_v2_dataset_loading() -> None:
-    """Verifies that Benchmark Dataset v2 loads 20 cases and 6 domain documents."""
-    assert len(BENCHMARK_CASES_V2) == 20
+    """Verifies that Benchmark Dataset v2 loads 30 cases and 6 domain documents."""
+    assert len(BENCHMARK_CASES_V2) == 30
     assert len(BENCHMARK_DOCUMENTS_V2) == 6
 
     for case in BENCHMARK_CASES_V2:
@@ -24,7 +24,6 @@ def test_benchmark_v2_dataset_loading() -> None:
         assert "expected_documents" in case
         assert "category" in case
         assert "difficulty" in case
-        assert len(case["expected_documents"]) >= 1
 
 
 def test_hit_rate_and_mrr_calculation() -> None:
@@ -71,16 +70,16 @@ def test_citation_verification_valid_wrong_missing() -> None:
     ]
 
     # Valid citation
-    assert _verify_citations("Rightsizing reduces costs. [1]", sources, ["01_cloud_cost_optimization.pdf"]) is True
+    assert _verify_citations("Rightsizing reduces costs. [1]", sources, ["01_cloud_cost_optimization.pdf"])["valid"] is True
 
     # Wrong document citation (cites [2] which is cybersecurity when expected is cloud)
-    assert _verify_citations("Rightsizing reduces costs. [2]", sources, ["01_cloud_cost_optimization.pdf"]) is False
+    assert _verify_citations("Rightsizing reduces costs. [2]", sources, ["01_cloud_cost_optimization.pdf"])["valid"] is False
 
     # Missing citation when expected
-    assert _verify_citations("Rightsizing reduces costs without any citation.", sources, ["01_cloud_cost_optimization.pdf"]) is False
+    assert _verify_citations("Rightsizing reduces costs without any citation.", sources, ["01_cloud_cost_optimization.pdf"])["valid"] is False
 
     # Out of bounds citation
-    assert _verify_citations("Rightsizing reduces costs. [99]", sources, ["01_cloud_cost_optimization.pdf"]) is False
+    assert _verify_citations("Rightsizing reduces costs. [99]", sources, ["01_cloud_cost_optimization.pdf"])["valid"] is False
 
 
 def test_full_benchmark_run_evaluation_metrics() -> None:

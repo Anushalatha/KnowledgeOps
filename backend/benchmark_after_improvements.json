@@ -1,0 +1,2192 @@
+{
+  "run_id": "3272a680-a6de-4281-bfe0-cfdce04be507",
+  "dataset_name": "KnowledgeOps Benchmark Dataset v2",
+  "created_at": "2026-09-19T10:16:35.807104+00:00",
+  "configuration": {
+    "top_k": 5,
+    "limit": 5,
+    "mmr_enabled": true,
+    "mmr_lambda": 0.7,
+    "candidate_pool_size": 15,
+    "generate_answers": true
+  },
+  "summary": {
+    "case_count": 30,
+    "retrieval_hit_rate": 1.0,
+    "mean_reciprocal_rank": 0.95,
+    "recall_at_3": 0.956,
+    "recall_at_5": 1.0,
+    "precision_at_3": 0.511,
+    "precision_at_5": 0.34,
+    "answer_relevance": 0.711,
+    "groundedness": 1.0,
+    "citation_correctness": 1.0,
+    "average_embedding_latency_ms": 2.3,
+    "average_retrieval_latency_ms": 5.8,
+    "average_reranking_latency_ms": 1.7,
+    "average_answer_latency_ms": 0.5,
+    "average_total_latency_ms": 6.2
+  },
+  "cases": [
+    {
+      "id": "case_01",
+      "question": "What does rightsizing mean in cloud infrastructure?",
+      "category": "direct_retrieval",
+      "difficulty": "easy",
+      "expected_documents": [
+        "01_cloud_cost_optimization.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Cloud Infrastructure Cost Optimization and FinOps Guide. [1] Rightsizing in cloud infrastructure means matching instance types and sizes to workload capacity and performance requirements at the lowest possible cost. [1] Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [2] Product Analytics, Cohort Analysis and Retention Framework. [3] Application Security and Data Protection Standards. [4] Data Engineering Ingestion and Pipeline Reliability Architecture. [5]",
+      "answer_relevance": 1.0,
+      "relevance_reason": "Directly addressed all requested question aspects",
+      "missing_aspects": [],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 8.3,
+      "answer_latency_ms": 0.7,
+      "total_latency_ms": 9.0,
+      "sources": [
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.725,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.416667,
+          "mmr_score": 0.063626
+        },
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.013043
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.016552
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.025714
+        }
+      ]
+    },
+    {
+      "id": "case_02",
+      "question": "Why should application APIs avoid returning internal implementation details when an error occurs?",
+      "category": "direct_retrieval",
+      "difficulty": "easy",
+      "expected_documents": [
+        "02_cybersecurity_basics.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Application Security and Data Protection Standards. [1] Application APIs must avoid returning internal implementation details, stack traces, or internal database schemas when an error occurs to prevent information disclosure vulnerabilities. [1] Idempotency is critical when retrying data processing jobs because an idempotent operation produces the exact same outcome regardless of how many times it is executed with identical input. [2] Key operational metrics shared between data engineering pipelines and distributed network services include error rate, retry attempt frequency, processing latency, throughput, and dead-letter queue depth. [2] Cloud Infrastructure Cost Optimization and FinOps Guide. [3] Distributed services must use explicit request timeouts to prevent cascading thread pool exhaustion and resource starvation when downstream dependencies slow down. [4] Product Analytics, Cohort Analysis and Retention Framework. [5]",
+      "answer_relevance": 1.0,
+      "relevance_reason": "Directly addressed all requested question aspects",
+      "missing_aspects": [],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 8.6,
+      "answer_latency_ms": 1.3,
+      "total_latency_ms": 9.9,
+      "sources": [
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.883333,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.566667,
+          "mmr_score": 0.238221
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.470833,
+          "mmr_score": 0.106792
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.470833,
+          "mmr_score": 0.092432
+        },
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.013043
+        }
+      ]
+    },
+    {
+      "id": "case_03",
+      "question": "Why is idempotency important when retrying data processing jobs?",
+      "category": "direct_retrieval",
+      "difficulty": "medium",
+      "expected_documents": [
+        "03_data_engineering_pipeline.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Data Engineering Ingestion and Pipeline Reliability Architecture. [1] Idempotency is critical when retrying data processing jobs because an idempotent operation produces the exact same outcome regardless of how many times it is executed with identical input. [1] Application Security and Data Protection Standards. [2] Application APIs must avoid returning internal implementation details, stack traces, or internal database schemas when an error occurs to prevent information disclosure vulnerabilities. [2] Distributed services must use explicit request timeouts to prevent cascading thread pool exhaustion and resource starvation when downstream dependencies slow down. [3] Reliability practices shared between data pipelines and distributed network services include idempotent request handlers, health checks, rate limiting, and exponential backoff with jitter. [3] Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [4] Cross-validation estimates generalization performance by splitting training data into multiple validation folds. [4] Storage tiering automatically moves infrequently accessed object data to lower-cost cold or archival storage classes. [5]",
+      "answer_relevance": 1.0,
+      "relevance_reason": "Directly addressed all requested question aspects",
+      "missing_aspects": [],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 9.1,
+      "answer_latency_ms": 0.7,
+      "total_latency_ms": 9.8,
+      "sources": [
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.8625,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.69375,
+          "mmr_score": 0.431978
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.5875,
+          "mmr_score": 0.265593
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.48125,
+          "mmr_score": 0.135046
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.48125,
+          "mmr_score": 0.127389
+        }
+      ]
+    },
+    {
+      "id": "case_04",
+      "question": "How does cohort analysis help understand user retention?",
+      "category": "direct_retrieval",
+      "difficulty": "medium",
+      "expected_documents": [
+        "04_product_analytics.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Product Analytics, Cohort Analysis and Retention Framework. [1] Cohort analysis breaks users into related groups based on shared characteristics or activation timeframes to analyze behavior and retention patterns over time. [1] Application Security and Data Protection Standards. [2] Data Engineering Ingestion and Pipeline Reliability Architecture. [3] Machine Learning Model Evaluation and Observability Guide. [4] Cloud Infrastructure Cost Optimization and FinOps Guide. [5]",
+      "answer_relevance": 1.0,
+      "relevance_reason": "Directly addressed all requested question aspects",
+      "missing_aspects": [],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 8.7,
+      "answer_latency_ms": 0.7,
+      "total_latency_ms": 9.4,
+      "sources": [
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.8,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.45,
+          "mmr_score": 0.11477
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.40625,
+          "mmr_score": 0.025756
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.017518
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.025175
+        }
+      ]
+    },
+    {
+      "id": "case_05",
+      "question": "Why should distributed services use explicit timeouts?",
+      "category": "direct_retrieval",
+      "difficulty": "easy",
+      "expected_documents": [
+        "05_networking_fundamentals.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Networking Fundamentals and Distributed Systems Reliability. [1] Distributed services must use explicit request timeouts to prevent cascading thread pool exhaustion and resource starvation when downstream dependencies slow down. [1] Principle of Least Privilege dictates that users, applications, and services must be granted only the minimum permissions required to perform their designated tasks. [2] Security practices for data-processing APIs include mandatory TLS encryption in transit, secret management via dedicated vaults, explicit scope-based OAuth tokens, and rate limiting to prevent denial of service. [2] Key operational metrics shared between data engineering pipelines and distributed network services include error rate, retry attempt frequency, processing latency, throughput, and dead-letter queue depth. [3] Cloud Infrastructure Cost Optimization and FinOps Guide. [4] Product Analytics, Cohort Analysis and Retention Framework. [5]",
+      "answer_relevance": 1.0,
+      "relevance_reason": "Directly addressed all requested question aspects",
+      "missing_aspects": [],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 11.0,
+      "answer_latency_ms": 0.6,
+      "total_latency_ms": 11.6,
+      "sources": [
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.778571,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.596429,
+          "mmr_score": 0.354301
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.596429,
+          "mmr_score": 0.344537
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.485714,
+          "mmr_score": 0.16686
+        },
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.013043
+        }
+      ]
+    },
+    {
+      "id": "case_06",
+      "question": "Why can accuracy be misleading for an imbalanced classification problem?",
+      "category": "direct_retrieval",
+      "difficulty": "medium",
+      "expected_documents": [
+        "06_machine_learning_evaluation.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Accuracy can be misleading for an imbalanced classification problem because a model that always predicts the majority class will achieve high accuracy while failing completely on the minority target class. [1] Networking Fundamentals and Distributed Systems Reliability. [2] Cloud Infrastructure Cost Optimization and FinOps Guide. [3] Application Security and Data Protection Standards. [4] Data Engineering Ingestion and Pipeline Reliability Architecture. [5]",
+      "answer_relevance": 1.0,
+      "relevance_reason": "Directly addressed all requested question aspects",
+      "missing_aspects": [],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 7.4,
+      "answer_latency_ms": 0.7,
+      "total_latency_ms": 8.1,
+      "sources": [
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.89375,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.40625,
+          "mmr_score": 0.030805
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.40625,
+          "mmr_score": 0.022461
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.40625,
+          "mmr_score": 0.012398
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.40625,
+          "mmr_score": 0.002634
+        }
+      ]
+    },
+    {
+      "id": "case_07",
+      "question": "What reliability practices are shared between data pipelines and distributed network services?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_documents": [
+        "03_data_engineering_pipeline.pdf",
+        "05_networking_fundamentals.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.667,
+      "precision_at_5": 0.4,
+      "answer": "Networking Fundamentals and Distributed Systems Reliability. [1] DNS (Domain Name System) resolution translates human-readable domain names into IP addresses required for network routing. [1] Data Engineering Ingestion and Pipeline Reliability Architecture. [2] Idempotency is critical when retrying data processing jobs because an idempotent operation produces the exact same outcome regardless of how many times it is executed with identical input. [2] FinOps practices combine financial management with cloud engineering to provide cost transparency, tag allocation, and budget alerts. [3] Storage tiering automatically moves infrequently accessed object data to lower-cost cold or archival storage classes. [3] Application Security and Data Protection Standards. [4] Principle of Least Privilege dictates that users, applications, and services must be granted only the minimum permissions required to perform their designated tasks. [4] Cohort analysis breaks users into related groups based on shared characteristics or activation timeframes to analyze behavior and retention patterns over time. [5]",
+      "answer_relevance": 0.25,
+      "relevance_reason": "Covered 1 of 4 requested aspects",
+      "missing_aspects": [
+        "health checks",
+        "rate limiting",
+        "backoff"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 8.0,
+      "answer_latency_ms": 0.6,
+      "total_latency_ms": 8.6,
+      "sources": [
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.883333,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.8625,
+          "mmr_score": 0.623232
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.683333,
+          "mmr_score": 0.317378
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.608333,
+          "mmr_score": 0.178739
+        },
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.491667,
+          "mmr_score": -0.013043
+        }
+      ]
+    },
+    {
+      "id": "case_08",
+      "question": "How does observability differ between an ML system and a data pipeline?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_documents": [
+        "06_machine_learning_evaluation.pdf",
+        "03_data_engineering_pipeline.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 2,
+      "retrieval_hit": true,
+      "reciprocal_rank": 0.5,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.667,
+      "precision_at_5": 0.4,
+      "answer": "DNS (Domain Name System) resolution translates human-readable domain names into IP addresses required for network routing. [1] Reliability practices shared between data pipelines and distributed network services include idempotent request handlers, health checks, rate limiting, and exponential backoff with jitter. [1] Machine Learning Model Evaluation and Observability Guide. [2] Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [2] Data Engineering Ingestion and Pipeline Reliability Architecture. [3] Idempotency is critical when retrying data processing jobs because an idempotent operation produces the exact same outcome regardless of how many times it is executed with identical input. [3] Storage tiering automatically moves infrequently accessed object data to lower-cost cold or archival storage classes. [4] Application Security and Data Protection Standards. [5] Security practices for data-processing APIs include mandatory TLS encryption in transit, secret management via dedicated vaults, explicit scope-based OAuth tokens, and rate limiting to prevent denial of service. [5]",
+      "answer_relevance": 0.75,
+      "relevance_reason": "Covered 3 of 4 requested aspects",
+      "missing_aspects": [
+        "schema"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 8.2,
+      "answer_latency_ms": 0.6,
+      "total_latency_ms": 8.8,
+      "sources": [
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.711111,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.711111,
+          "mmr_score": 0.688636
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.663889,
+          "mmr_score": 0.553258
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.505556,
+          "mmr_score": 0.208159
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.505556,
+          "mmr_score": 0.203563
+        }
+      ]
+    },
+    {
+      "id": "case_09",
+      "question": "What security practices should be applied to APIs that process application data?",
+      "category": "cross_document",
+      "difficulty": "medium",
+      "expected_documents": [
+        "02_cybersecurity_basics.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Application Security and Data Protection Standards. [1] Application APIs must avoid returning internal implementation details, stack traces, or internal database schemas when an error occurs to prevent information disclosure vulnerabilities. [1] FinOps practices combine financial management with cloud engineering to provide cost transparency, tag allocation, and budget alerts. [2] Storage tiering automatically moves infrequently accessed object data to lower-cost cold or archival storage classes. [2] Accuracy can be misleading for an imbalanced classification problem because a model that always predicts the majority class will achieve high accuracy while failing completely on the minority target class. [3] Precision measures the proportion of positive predictions that were actually correct, whereas recall measures the proportion of actual positive cases successfully identified. [3] Reliability practices shared between data pipelines and distributed network services include idempotent request handlers, health checks, rate limiting, and exponential backoff with jitter. [4] Data Engineering Ingestion and Pipeline Reliability Architecture. [5] Idempotency is critical when retrying data processing jobs because an idempotent operation produces the exact same outcome regardless of how many times it is executed with identical input. [5]",
+      "answer_relevance": 0.5,
+      "relevance_reason": "Covered 2 of 4 requested aspects",
+      "missing_aspects": [
+        "TLS encryption",
+        "OAuth tokens"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 7.1,
+      "answer_latency_ms": 0.4,
+      "total_latency_ms": 7.5,
+      "sources": [
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.825,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.6,
+          "mmr_score": 0.333448
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.5,
+          "mmr_score": 0.174736
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.5,
+          "mmr_score": 0.164673
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.475,
+          "mmr_score": 0.116021
+        }
+      ]
+    },
+    {
+      "id": "case_10",
+      "question": "How can retry strategies affect both data processing and distributed services?",
+      "category": "cross_document",
+      "difficulty": "medium",
+      "expected_documents": [
+        "03_data_engineering_pipeline.pdf",
+        "05_networking_fundamentals.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.667,
+      "precision_at_5": 0.4,
+      "answer": "Data Engineering Ingestion and Pipeline Reliability Architecture. [1] Idempotency is critical when retrying data processing jobs because an idempotent operation produces the exact same outcome regardless of how many times it is executed with identical input. [1] Application Security and Data Protection Standards. [2] Principle of Least Privilege dictates that users, applications, and services must be granted only the minimum permissions required to perform their designated tasks. [2] Networking Fundamentals and Distributed Systems Reliability. [3] Distributed services must use explicit request timeouts to prevent cascading thread pool exhaustion and resource starvation when downstream dependencies slow down. [3] Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [4] Cross-validation estimates generalization performance by splitting training data into multiple validation folds. [4] Storage tiering automatically moves infrequently accessed object data to lower-cost cold or archival storage classes. [5]",
+      "answer_relevance": 0.667,
+      "relevance_reason": "Covered 2 of 3 requested aspects",
+      "missing_aspects": [
+        "backoff"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 4.9,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 5.2,
+      "sources": [
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.834091,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.615909,
+          "mmr_score": 0.324286
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.615909,
+          "mmr_score": 0.310465
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.518182,
+          "mmr_score": 0.175711
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.495455,
+          "mmr_score": 0.131597
+        }
+      ]
+    },
+    {
+      "id": "case_11",
+      "question": "What operational metrics are useful for both cloud infrastructure and data pipelines?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_documents": [
+        "01_cloud_cost_optimization.pdf",
+        "03_data_engineering_pipeline.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.667,
+      "precision_at_5": 0.4,
+      "answer": "Cloud Infrastructure Cost Optimization and FinOps Guide. [1] Rightsizing in cloud infrastructure means matching instance types and sizes to workload capacity and performance requirements at the lowest possible cost. [1] Data Engineering Ingestion and Pipeline Reliability Architecture. [2] Idempotency is critical when retrying data processing jobs because an idempotent operation produces the exact same outcome regardless of how many times it is executed with identical input. [2] Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [3] Cross-validation estimates generalization performance by splitting training data into multiple validation folds. [3] Reliability practices shared between data pipelines and distributed network services include idempotent request handlers, health checks, rate limiting, and exponential backoff with jitter. [4] Application Security and Data Protection Standards. [5] Security practices for data-processing APIs include mandatory TLS encryption in transit, secret management via dedicated vaults, explicit scope-based OAuth tokens, and rate limiting to prevent denial of service. [5]",
+      "answer_relevance": 0.75,
+      "relevance_reason": "Covered 3 of 4 requested aspects",
+      "missing_aspects": [
+        "bandwidth"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 4.5,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 4.8,
+      "sources": [
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.841667,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.725,
+          "mmr_score": 0.491647
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.704167,
+          "mmr_score": 0.464404
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.533333,
+          "mmr_score": 0.176353
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.5125,
+          "mmr_score": 0.153407
+        }
+      ]
+    },
+    {
+      "id": "case_12",
+      "question": "How can monitoring help identify problems in both ML systems and product analytics?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_documents": [
+        "06_machine_learning_evaluation.pdf",
+        "04_product_analytics.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.667,
+      "precision_at_5": 0.4,
+      "answer": "Product Analytics, Cohort Analysis and Retention Framework. [1] Tracking Daily Active Users (DAU), Monthly Active Users (MAU), and the DAU/MAU stickiness ratio provides visibility into product engagement and habit formation. [1] Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [2] Networking Fundamentals and Distributed Systems Reliability. [3] Useful operational metrics for cloud cost monitoring include CPU utilization, idle instance ratio, storage growth rate, network egress bandwidth, and monthly cost per active tenant. [4] Data Engineering Ingestion and Pipeline Reliability Architecture. [5]",
+      "answer_relevance": 0.5,
+      "relevance_reason": "Covered 2 of 4 requested aspects",
+      "missing_aspects": [
+        "anomaly spikes",
+        "conversion"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 5.2,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 5.5,
+      "sources": [
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.788636,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.518182,
+          "mmr_score": 0.204071
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.495455,
+          "mmr_score": 0.163638
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.495455,
+          "mmr_score": 0.155293
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.420455,
+          "mmr_score": 0.001164
+        }
+      ]
+    },
+    {
+      "id": "case_13",
+      "question": "A service processes analytical data through an API. What practices should be used to protect the API, make the pipeline retry-safe, and monitor failures?",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "expected_documents": [
+        "02_cybersecurity_basics.pdf",
+        "03_data_engineering_pipeline.pdf",
+        "05_networking_fundamentals.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 2,
+      "retrieval_hit": true,
+      "reciprocal_rank": 0.5,
+      "recall_at_3": 0.667,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.667,
+      "precision_at_5": 0.6,
+      "answer": "FinOps practices combine financial management with cloud engineering to provide cost transparency, tag allocation, and budget alerts. [1] Storage tiering automatically moves infrequently accessed object data to lower-cost cold or archival storage classes. [1] Application Security and Data Protection Standards. [2] Security practices for data-processing APIs include mandatory TLS encryption in transit, secret management via dedicated vaults, explicit scope-based OAuth tokens, and rate limiting to prevent denial of service. [2] Data Engineering Ingestion and Pipeline Reliability Architecture. [3] Idempotency is critical when retrying data processing jobs because an idempotent operation produces the exact same outcome regardless of how many times it is executed with identical input. [3] Circuit breakers monitor downstream failure rates and temporarily trip open to fail fast rather than overloading unhealthy services. [4] Reliability practices shared between data pipelines and distributed network services include idempotent request handlers, health checks, rate limiting, and exponential backoff with jitter. [4] Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [5] Cross-validation estimates generalization performance by splitting training data into multiple validation folds. [5]",
+      "answer_relevance": 0.667,
+      "relevance_reason": "Covered 2 of 3 requested aspects",
+      "missing_aspects": [
+        "retry-safe"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 7.7,
+      "answer_latency_ms": 0.6,
+      "total_latency_ms": 8.3,
+      "sources": [
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.740789,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.740789,
+          "mmr_score": 0.683448
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.740789,
+          "mmr_score": 0.674286
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.727632,
+          "mmr_score": 0.625642
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.564474,
+          "mmr_score": 0.213626
+        }
+      ]
+    },
+    {
+      "id": "case_14",
+      "question": "A machine learning service is deployed in a distributed environment. What should be monitored and what network reliability mechanisms should be considered?",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "expected_documents": [
+        "06_machine_learning_evaluation.pdf",
+        "05_networking_fundamentals.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 2,
+      "retrieval_hit": true,
+      "reciprocal_rank": 0.5,
+      "recall_at_3": 0.5,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.4,
+      "answer": "Data Engineering Ingestion and Pipeline Reliability Architecture. [1] Key operational metrics shared between data engineering pipelines and distributed network services include error rate, retry attempt frequency, processing latency, throughput, and dead-letter queue depth. [1] Networking Fundamentals and Distributed Systems Reliability. [2] DNS (Domain Name System) resolution translates human-readable domain names into IP addresses required for network routing. [2] Useful operational metrics for cloud cost monitoring include CPU utilization, idle instance ratio, storage growth rate, network egress bandwidth, and monthly cost per active tenant. [3] Machine Learning Model Evaluation and Observability Guide. [4] Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [4] Security practices for data-processing APIs include mandatory TLS encryption in transit, secret management via dedicated vaults, explicit scope-based OAuth tokens, and rate limiting to prevent denial of service. [5]",
+      "answer_relevance": 0.333,
+      "relevance_reason": "Covered 1 of 3 requested aspects",
+      "missing_aspects": [
+        "timeouts",
+        "circuit breakers"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 8.2,
+      "answer_latency_ms": 0.7,
+      "total_latency_ms": 8.9,
+      "sources": [
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.746429,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.746429,
+          "mmr_score": 0.660465
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.653571,
+          "mmr_score": 0.490985
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.578571,
+          "mmr_score": 0.347968
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.485714,
+          "mmr_score": 0.154067
+        }
+      ]
+    },
+    {
+      "id": "case_15",
+      "question": "A company wants to reduce cloud spending without damaging service reliability. What principles should guide the optimization?",
+      "category": "multi_hop",
+      "difficulty": "medium",
+      "expected_documents": [
+        "01_cloud_cost_optimization.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Cloud Infrastructure Cost Optimization and FinOps Guide. [1] Rightsizing in cloud infrastructure means matching instance types and sizes to workload capacity and performance requirements at the lowest possible cost. [1] Networking Fundamentals and Distributed Systems Reliability. [2] Reliability practices shared between data pipelines and distributed network services include idempotent request handlers, health checks, rate limiting, and exponential backoff with jitter. [2] Machine Learning Model Evaluation and Observability Guide. [3] Security practices for data-processing APIs include mandatory TLS encryption in transit, secret management via dedicated vaults, explicit scope-based OAuth tokens, and rate limiting to prevent denial of service. [4] Data Engineering Ingestion and Pipeline Reliability Architecture. [5]",
+      "answer_relevance": 0.333,
+      "relevance_reason": "Covered 1 of 3 requested aspects",
+      "missing_aspects": [
+        "reserved instances",
+        "auto-scaling"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 7.6,
+      "answer_latency_ms": 0.6,
+      "total_latency_ms": 8.2,
+      "sources": [
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.683333,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.541667,
+          "mmr_score": 0.342735
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.483333,
+          "mmr_score": 0.200291
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.483333,
+          "mmr_score": 0.190228
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.483333,
+          "mmr_score": 0.180464
+        }
+      ]
+    },
+    {
+      "id": "case_16",
+      "question": "What is cohort analysis?",
+      "category": "distractor",
+      "difficulty": "easy",
+      "expected_documents": [
+        "04_product_analytics.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Product Analytics, Cohort Analysis and Retention Framework. [1] Cohort analysis breaks users into related groups based on shared characteristics or activation timeframes to analyze behavior and retention patterns over time. [1] Data Engineering Ingestion and Pipeline Reliability Architecture. [2] Machine Learning Model Evaluation and Observability Guide. [3] Cloud Infrastructure Cost Optimization and FinOps Guide. [4] Application Security and Data Protection Standards. [5]",
+      "answer_relevance": 1.0,
+      "relevance_reason": "Directly addressed all requested question aspects",
+      "missing_aspects": [],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 6.7,
+      "answer_latency_ms": 0.4,
+      "total_latency_ms": 7.1,
+      "sources": [
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.616667,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.006429
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.017518
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.025175
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.025714
+        }
+      ]
+    },
+    {
+      "id": "case_17",
+      "question": "What is DNS used for?",
+      "category": "distractor",
+      "difficulty": "easy",
+      "expected_documents": [
+        "05_networking_fundamentals.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Networking Fundamentals and Distributed Systems Reliability. [1] Machine Learning Model Evaluation and Observability Guide. [2] Cloud Infrastructure Cost Optimization and FinOps Guide. [3] Application Security and Data Protection Standards. [4] Data Engineering Ingestion and Pipeline Reliability Architecture. [5]",
+      "answer_relevance": 0.5,
+      "relevance_reason": "Covered 1 of 2 requested aspects",
+      "missing_aspects": [
+        "DNS"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 3.5,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 3.8,
+      "sources": [
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.5,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.4375,
+          "mmr_score": 0.338636
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.4375,
+          "mmr_score": 0.330292
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.4375,
+          "mmr_score": 0.320229
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.4375,
+          "mmr_score": 0.310465
+        }
+      ]
+    },
+    {
+      "id": "case_18",
+      "question": "What is precision in classification?",
+      "category": "distractor",
+      "difficulty": "easy",
+      "expected_documents": [
+        "06_machine_learning_evaluation.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Accuracy can be misleading for an imbalanced classification problem because a model that always predicts the majority class will achieve high accuracy while failing completely on the minority target class. [1] Precision measures the proportion of positive predictions that were actually correct, whereas recall measures the proportion of actual positive cases successfully identified. [1] Networking Fundamentals and Distributed Systems Reliability. [2] Product Analytics, Cohort Analysis and Retention Framework. [3] Cloud Infrastructure Cost Optimization and FinOps Guide. [4] Application Security and Data Protection Standards. [5]",
+      "answer_relevance": 1.0,
+      "relevance_reason": "Directly addressed all requested question aspects",
+      "missing_aspects": [],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 3.0,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 3.3,
+      "sources": [
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.616667,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.011364
+        },
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.011628
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.019708
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.029771
+        }
+      ]
+    },
+    {
+      "id": "case_19",
+      "question": "What is a data contract?",
+      "category": "distractor",
+      "difficulty": "easy",
+      "expected_documents": [
+        "03_data_engineering_pipeline.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Data Engineering Ingestion and Pipeline Reliability Architecture. [1] Idempotency is critical when retrying data processing jobs because an idempotent operation produces the exact same outcome regardless of how many times it is executed with identical input. [1] Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [2] Cross-validation estimates generalization performance by splitting training data into multiple validation folds. [2] Storage tiering automatically moves infrequently accessed object data to lower-cost cold or archival storage classes. [3] Application Security and Data Protection Standards. [4] Security practices for data-processing APIs include mandatory TLS encryption in transit, secret management via dedicated vaults, explicit scope-based OAuth tokens, and rate limiting to prevent denial of service. [4] Reliability practices shared between data pipelines and distributed network services include idempotent request handlers, health checks, rate limiting, and exponential backoff with jitter. [5]",
+      "answer_relevance": 0.5,
+      "relevance_reason": "Covered 1 of 2 requested aspects",
+      "missing_aspects": [
+        "schema"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 4.0,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 4.3,
+      "sources": [
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.616667,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.533333,
+          "mmr_score": 0.441101
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.533333,
+          "mmr_score": 0.433444
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.533333,
+          "mmr_score": 0.432905
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.533333,
+          "mmr_score": 0.419084
+        }
+      ]
+    },
+    {
+      "id": "case_20",
+      "question": "What is least privilege?",
+      "category": "distractor",
+      "difficulty": "easy",
+      "expected_documents": [
+        "02_cybersecurity_basics.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Principle of Least Privilege dictates that users, applications, and services must be granted only the minimum permissions required to perform their designated tasks. [1] Product Analytics, Cohort Analysis and Retention Framework. [2] Machine Learning Model Evaluation and Observability Guide. [3] Cloud Infrastructure Cost Optimization and FinOps Guide. [4] Data Engineering Ingestion and Pipeline Reliability Architecture. [5]",
+      "answer_relevance": 1.0,
+      "relevance_reason": "Directly addressed all requested question aspects",
+      "missing_aspects": [],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 3.2,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 3.5,
+      "sources": [
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.616667,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.008759
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.015441
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.019708
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.025714
+        }
+      ]
+    },
+    {
+      "id": "case_21",
+      "question": "How can network circuit breakers and pipeline dead-letter queues be combined to handle persistent external API outages?",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "expected_documents": [
+        "03_data_engineering_pipeline.pdf",
+        "05_networking_fundamentals.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.667,
+      "precision_at_5": 0.4,
+      "answer": "Data Engineering Ingestion and Pipeline Reliability Architecture. [1] Data pipelines rely on automated schema validation, dead-letter queues for unparseable records, atomic batch commits, and exponential backoff retry policies. [1] DNS (Domain Name System) resolution translates human-readable domain names into IP addresses required for network routing. [2] Circuit breakers monitor downstream failure rates and temporarily trip open to fail fast rather than overloading unhealthy services. [2] Useful operational metrics for cloud cost monitoring include CPU utilization, idle instance ratio, storage growth rate, network egress bandwidth, and monthly cost per active tenant. [3] Machine Learning Model Evaluation and Observability Guide. [4] Product Analytics, Cohort Analysis and Retention Framework. [5]",
+      "answer_relevance": 0.667,
+      "relevance_reason": "Covered 2 of 3 requested aspects",
+      "missing_aspects": [
+        "outages"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 3.9,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 4.2,
+      "sources": [
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.784375,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.7375,
+          "mmr_score": 0.577132
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.48125,
+          "mmr_score": 0.135936
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.40625,
+          "mmr_score": 0.00807
+        },
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.390625,
+          "mmr_score": -0.013043
+        }
+      ]
+    },
+    {
+      "id": "case_22",
+      "question": "A company wants to optimize cloud infrastructure costs while preventing API rate-limiting and security exposure. What strategies should be implemented?",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "expected_documents": [
+        "01_cloud_cost_optimization.pdf",
+        "02_cybersecurity_basics.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.667,
+      "precision_at_5": 0.4,
+      "answer": "Cloud Infrastructure Cost Optimization and FinOps Guide. [1] Rightsizing in cloud infrastructure means matching instance types and sizes to workload capacity and performance requirements at the lowest possible cost. [1] Accuracy can be misleading for an imbalanced classification problem because a model that always predicts the majority class will achieve high accuracy while failing completely on the minority target class. [2] Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [2] Application Security and Data Protection Standards. [3] Security practices for data-processing APIs include mandatory TLS encryption in transit, secret management via dedicated vaults, explicit scope-based OAuth tokens, and rate limiting to prevent denial of service. [3] Reliability practices shared between data pipelines and distributed network services include idempotent request handlers, health checks, rate limiting, and exponential backoff with jitter. [4] Key operational metrics shared between data engineering pipelines and distributed network services include error rate, retry attempt frequency, processing latency, throughput, and dead-letter queue depth. [5]",
+      "answer_relevance": 1.0,
+      "relevance_reason": "Directly addressed all requested question aspects",
+      "missing_aspects": [],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 3.2,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 3.5,
+      "sources": [
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.669444,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.566667,
+          "mmr_score": 0.423858
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.505556,
+          "mmr_score": 0.274539
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.416667,
+          "mmr_score": 0.039537
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.402778,
+          "mmr_score": -0.004881
+        }
+      ]
+    },
+    {
+      "id": "case_23",
+      "question": "How do product retention metrics (like DAU/MAU) inform machine learning model monitoring for feature drift?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_documents": [
+        "04_product_analytics.pdf",
+        "06_machine_learning_evaluation.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.667,
+      "precision_at_5": 0.4,
+      "answer": "Machine Learning Model Evaluation and Observability Guide. [1] Accuracy can be misleading for an imbalanced classification problem because a model that always predicts the majority class will achieve high accuracy while failing completely on the minority target class. [1] Product Analytics, Cohort Analysis and Retention Framework. [2] Cohort analysis breaks users into related groups based on shared characteristics or activation timeframes to analyze behavior and retention patterns over time. [2] Useful operational metrics for cloud cost monitoring include CPU utilization, idle instance ratio, storage growth rate, network egress bandwidth, and monthly cost per active tenant. [3] Key operational metrics shared between data engineering pipelines and distributed network services include error rate, retry attempt frequency, processing latency, throughput, and dead-letter queue depth. [4] Application Security and Data Protection Standards. [5]",
+      "answer_relevance": 0.0,
+      "relevance_reason": "Covered 0 of 3 requested aspects",
+      "missing_aspects": [
+        "DAU/MAU",
+        "concept drift",
+        "feature drift"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 4.7,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 5.0,
+      "sources": [
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.808333,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.775,
+          "mmr_score": 0.632373
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.575,
+          "mmr_score": 0.288292
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.5,
+          "mmr_score": 0.156825
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.466667,
+          "mmr_score": 0.100286
+        }
+      ]
+    },
+    {
+      "id": "case_24",
+      "question": "What practices protect an analytical pipeline against schema drift, unauthorized access, and network starvation?",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "expected_documents": [
+        "02_cybersecurity_basics.pdf",
+        "03_data_engineering_pipeline.pdf",
+        "05_networking_fundamentals.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 1.0,
+      "precision_at_5": 0.6,
+      "answer": "Data Engineering Ingestion and Pipeline Reliability Architecture. [1] A data contract defines the structural schema, data quality rules, SLA expectations, and semantic definitions agreed upon between data producers and data consumers. [1] DNS (Domain Name System) resolution translates human-readable domain names into IP addresses required for network routing. [2] Distributed services must use explicit request timeouts to prevent cascading thread pool exhaustion and resource starvation when downstream dependencies slow down. [2] Security practices for data-processing APIs include mandatory TLS encryption in transit, secret management via dedicated vaults, explicit scope-based OAuth tokens, and rate limiting to prevent denial of service. [3] FinOps practices combine financial management with cloud engineering to provide cost transparency, tag allocation, and budget alerts. [4] Useful operational metrics for cloud cost monitoring include CPU utilization, idle instance ratio, storage growth rate, network egress bandwidth, and monthly cost per active tenant. [4] Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [5]",
+      "answer_relevance": 0.667,
+      "relevance_reason": "Covered 2 of 3 requested aspects",
+      "missing_aspects": [
+        "unauthorized access"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 4.4,
+      "answer_latency_ms": 0.4,
+      "total_latency_ms": 4.8,
+      "sources": [
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.676923,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.676923,
+          "mmr_score": 0.660465
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.638462,
+          "mmr_score": 0.574992
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.582692,
+          "mmr_score": 0.441491
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.488462,
+          "mmr_score": 0.213626
+        }
+      ]
+    },
+    {
+      "id": "case_25",
+      "question": "How does input sanitization in web security differ from data contract schema validation in ETL pipelines?",
+      "category": "cross_document",
+      "difficulty": "medium",
+      "expected_documents": [
+        "02_cybersecurity_basics.pdf",
+        "03_data_engineering_pipeline.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.667,
+      "precision_at_5": 0.4,
+      "answer": "Data Engineering Ingestion and Pipeline Reliability Architecture. [1] Idempotency is critical when retrying data processing jobs because an idempotent operation produces the exact same outcome regardless of how many times it is executed with identical input. [1] Application Security and Data Protection Standards. [2] Input validation and sanitization prevent SQL injection, cross-site scripting (XSS), and command injection attacks. [2] Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [3] Cross-validation estimates generalization performance by splitting training data into multiple validation folds. [3] Reliability practices shared between data pipelines and distributed network services include idempotent request handlers, health checks, rate limiting, and exponential backoff with jitter. [4] Storage tiering automatically moves infrequently accessed object data to lower-cost cold or archival storage classes. [5]",
+      "answer_relevance": 1.0,
+      "relevance_reason": "Directly addressed all requested question aspects",
+      "missing_aspects": [],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 3.2,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 3.5,
+      "sources": [
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.8,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.764286,
+          "mmr_score": 0.615463
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.560714,
+          "mmr_score": 0.288364
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.485714,
+          "mmr_score": 0.142818
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.467857,
+          "mmr_score": 0.127766
+        }
+      ]
+    },
+    {
+      "id": "case_26",
+      "question": "What cloud storage tiering policies should be applied to cold dead-letter queue records?",
+      "category": "cross_document",
+      "difficulty": "medium",
+      "expected_documents": [
+        "01_cloud_cost_optimization.pdf",
+        "03_data_engineering_pipeline.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.667,
+      "precision_at_5": 0.4,
+      "answer": "Cloud Infrastructure Cost Optimization and FinOps Guide. [1] Rightsizing in cloud infrastructure means matching instance types and sizes to workload capacity and performance requirements at the lowest possible cost. [1] Data pipelines rely on automated schema validation, dead-letter queues for unparseable records, atomic batch commits, and exponential backoff retry policies. [2] Key operational metrics shared between data engineering pipelines and distributed network services include error rate, retry attempt frequency, processing latency, throughput, and dead-letter queue depth. [2] Product Analytics, Cohort Analysis and Retention Framework. [3] Machine Learning Model Evaluation and Observability Guide. [4] Application Security and Data Protection Standards. [5]",
+      "answer_relevance": 0.5,
+      "relevance_reason": "Covered 1 of 2 requested aspects",
+      "missing_aspects": [
+        "storage tiering"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 5.1,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 5.4,
+      "sources": [
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.8,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.704167,
+          "mmr_score": 0.516983
+        },
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.013043
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.019708
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.025714
+        }
+      ]
+    },
+    {
+      "id": "case_27",
+      "question": "Why is cross-validation insufficient for detecting concept drift in production ML models?",
+      "category": "distractor",
+      "difficulty": "medium",
+      "expected_documents": [
+        "06_machine_learning_evaluation.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.2,
+      "answer": "Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [1] Cross-validation estimates generalization performance by splitting training data into multiple validation folds. [1] Input validation and sanitization prevent SQL injection, cross-site scripting (XSS), and command injection attacks. [2] Data pipelines rely on automated schema validation, dead-letter queues for unparseable records, atomic batch commits, and exponential backoff retry policies. [3] Cloud Infrastructure Cost Optimization and FinOps Guide. [4] Networking Fundamentals and Distributed Systems Reliability. [5]",
+      "answer_relevance": 0.667,
+      "relevance_reason": "Covered 2 of 3 requested aspects",
+      "missing_aspects": [
+        "production"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 3.1,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 3.4,
+      "sources": [
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.725,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.45,
+          "mmr_score": 0.134559
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.425,
+          "mmr_score": 0.074286
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.4,
+          "mmr_score": 0.024825
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.4,
+          "mmr_score": 0.010465
+        }
+      ]
+    },
+    {
+      "id": "case_28",
+      "question": "What shared operational metrics should be monitored to detect both networking bottleneck timeouts and data ingestion queue lag?",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "expected_documents": [
+        "03_data_engineering_pipeline.pdf",
+        "05_networking_fundamentals.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.667,
+      "precision_at_5": 0.4,
+      "answer": "Data Engineering Ingestion and Pipeline Reliability Architecture. [1] Idempotency is critical when retrying data processing jobs because an idempotent operation produces the exact same outcome regardless of how many times it is executed with identical input. [1] Storage tiering automatically moves infrequently accessed object data to lower-cost cold or archival storage classes. [2] Useful operational metrics for cloud cost monitoring include CPU utilization, idle instance ratio, storage growth rate, network egress bandwidth, and monthly cost per active tenant. [2] Networking Fundamentals and Distributed Systems Reliability. [3] Distributed services must use explicit request timeouts to prevent cascading thread pool exhaustion and resource starvation when downstream dependencies slow down. [3] Machine learning system observability requires monitoring feature data drift, concept drift, prediction distribution shifts, and model latency alongside standard infrastructure metrics. [4] Cross-validation estimates generalization performance by splitting training data into multiple validation folds. [4] Cohort analysis breaks users into related groups based on shared characteristics or activation timeframes to analyze behavior and retention patterns over time. [5]",
+      "answer_relevance": 0.75,
+      "relevance_reason": "Covered 3 of 4 requested aspects",
+      "missing_aspects": [
+        "queue depth"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 4.0,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 4.3,
+      "sources": [
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.784375,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.753125,
+          "mmr_score": 0.60266
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.9,
+          "reranking_score": 0.753125,
+          "mmr_score": 0.5883
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.7,
+          "reranking_score": 0.571875,
+          "mmr_score": 0.18957
+        },
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.48125,
+          "mmr_score": -0.013043
+        }
+      ]
+    },
+    {
+      "id": "case_29",
+      "question": "How can A/B experimentation funnels be used to validate cloud auto-scaling cost savings?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_documents": [
+        "01_cloud_cost_optimization.pdf",
+        "04_product_analytics.pdf"
+      ],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 0.5,
+      "recall_at_5": 1.0,
+      "precision_at_3": 0.333,
+      "precision_at_5": 0.4,
+      "answer": "Cloud Infrastructure Cost Optimization and FinOps Guide. [1] Rightsizing in cloud infrastructure means matching instance types and sizes to workload capacity and performance requirements at the lowest possible cost. [1] Machine Learning Model Evaluation and Observability Guide. [2] Data Engineering Ingestion and Pipeline Reliability Architecture. [3] Product Analytics, Cohort Analysis and Retention Framework. [4] Application Security and Data Protection Standards. [5]",
+      "answer_relevance": 0.333,
+      "relevance_reason": "Covered 1 of 3 requested aspects",
+      "missing_aspects": [
+        "experimentation",
+        "auto-scaling"
+      ],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "All citations valid and matching expected sources",
+      "retrieval_latency_ms": 3.1,
+      "answer_latency_ms": 0.3,
+      "total_latency_ms": 3.4,
+      "sources": [
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.8,
+          "reranking_score": 0.713636,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.397727,
+          "mmr_score": 0.027271
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.397727,
+          "mmr_score": 0.021805
+        },
+        {
+          "document_id": "04_product_analytics",
+          "filename": "04_product_analytics.pdf",
+          "chunk_id": "04_product_analytics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.013043
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.375,
+          "mmr_score": -0.025714
+        }
+      ]
+    },
+    {
+      "id": "case_30",
+      "question": "What quantum encryption algorithm is used by KnowledgeOps for satellite network communication?",
+      "category": "insufficient_evidence",
+      "difficulty": "hard",
+      "expected_documents": [],
+      "retrieved_chunks": 5,
+      "relevant_rank": 1,
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "precision_at_3": 1.0,
+      "precision_at_5": 1.0,
+      "answer": "I don't have enough information in the provided knowledge base to answer this.",
+      "answer_relevance": 1.0,
+      "relevance_reason": "Correct insufficient evidence response",
+      "missing_aspects": [],
+      "groundedness": 1.0,
+      "unsupported_claim_count": 0,
+      "citation_correctness": true,
+      "citation_reason": "Insufficient evidence response requires no citations",
+      "retrieval_latency_ms": 4.0,
+      "answer_latency_ms": 0.0,
+      "total_latency_ms": 4.0,
+      "sources": [
+        {
+          "document_id": "01_cloud_cost_optimization",
+          "filename": "01_cloud_cost_optimization.pdf",
+          "chunk_id": "01_cloud_cost_optimization.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.5,
+          "mmr_score": 0.7
+        },
+        {
+          "document_id": "02_cybersecurity_basics",
+          "filename": "02_cybersecurity_basics.pdf",
+          "chunk_id": "02_cybersecurity_basics.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.5,
+          "mmr_score": 0.683448
+        },
+        {
+          "document_id": "03_data_engineering_pipeline",
+          "filename": "03_data_engineering_pipeline.pdf",
+          "chunk_id": "03_data_engineering_pipeline.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.5,
+          "mmr_score": 0.674286
+        },
+        {
+          "document_id": "05_networking_fundamentals",
+          "filename": "05_networking_fundamentals.pdf",
+          "chunk_id": "05_networking_fundamentals.pdf:chunk0",
+          "score": 0.6,
+          "reranking_score": 0.5,
+          "mmr_score": 0.660465
+        },
+        {
+          "document_id": "06_machine_learning_evaluation",
+          "filename": "06_machine_learning_evaluation.pdf",
+          "chunk_id": "06_machine_learning_evaluation.pdf:chunk0",
+          "score": 0.5,
+          "reranking_score": 0.4,
+          "mmr_score": 0.120292
+        }
+      ]
+    }
+  ]
+}

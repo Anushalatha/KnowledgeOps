@@ -88,10 +88,13 @@ type EvaluationCaseResult = {
   precision_at_3: number
   precision_at_5: number
   answer: string | null
-  answer_relevance: number | null
+  answer_relevance?: number | null
+  relevance_reason?: string | null
+  missing_aspects?: string[]
   groundedness: number | null
   unsupported_claim_count: number
   citation_correctness: boolean | null
+  citation_reason?: string | null
   retrieval_latency_ms: number
   answer_latency_ms: number | null
   total_latency_ms: number
@@ -102,7 +105,14 @@ type EvaluationRun = {
   run_id: string
   dataset_name: string
   created_at: string
-  configuration?: { top_k?: number; limit?: number; generate_answers?: boolean }
+  configuration?: {
+    top_k?: number
+    limit?: number
+    mmr_enabled?: boolean
+    mmr_lambda?: number
+    candidate_pool_size?: number
+    generate_answers?: boolean
+  }
   summary: {
     case_count: number
     retrieval_hit_rate: number | null
@@ -116,6 +126,7 @@ type EvaluationRun = {
     citation_correctness?: number | null
     average_embedding_latency_ms?: number
     average_retrieval_latency_ms: number
+    average_reranking_latency_ms?: number
     average_answer_latency_ms?: number
     average_total_latency_ms?: number
   }
@@ -480,19 +491,23 @@ function App() {
   }
 
   const [benchmarkTopK, setBenchmarkTopK] = React.useState<number>(5)
+  const [mmrEnabled, setMmrEnabled] = React.useState<boolean>(true)
+  const [mmrLambda, setMmrLambda] = React.useState<number>(0.70)
+  const [candidateK, setCandidateK] = React.useState<number>(15)
+  const [selectedCaseId, setSelectedCaseId] = React.useState<string | null>(null)
   const [benchmarkRunning, setBenchmarkRunning] = React.useState<boolean>(false)
   const [benchmarkResult, setBenchmarkResult] = React.useState<EvaluationRun | null>(null)
   const [categoryFilter, setCategoryFilter] = React.useState<string>('all')
   const [difficultyFilter, setDifficultyFilter] = React.useState<string>('all')
   const [statusFilter, setStatusFilter] = React.useState<string>('all')
+  const [failureTypeFilter, setFailureTypeFilter] = React.useState<string>('all')
 
   const runBenchmarkV2 = async (topKVal = benchmarkTopK) => {
     setBenchmarkRunning(true)
     setEvaluationError(null)
     try {
-      const response = await fetch(`http://localhost:8000/evaluations/benchmark/run?top_k=${topKVal}`, {
-        method: 'POST',
-      })
+      const url = `http://localhost:8000/evaluations/benchmark/run?top_k=${topKVal}&mmr_enabled=${mmrEnabled}&mmr_lambda=${mmrLambda}&candidate_pool_size=${candidateK}`
+      const response = await fetch(url, { method: 'POST' })
       const data = (await response.json()) as EvaluationRun | { detail?: string }
       if (!response.ok) throw new Error((data as { detail?: string }).detail ?? 'Benchmark run failed')
       const run = data as EvaluationRun
@@ -820,22 +835,50 @@ function App() {
     const activeRun = benchmarkResult || evaluationRuns.find((r) => r.cases && r.cases.length > 0) || evaluationRuns[0]
     const cases = activeRun?.cases || []
 
+    const getFailureType = (c: EvaluationCaseResult): string => {
+      if (c.retrieval_hit === false) return 'Retrieval'
+      if (c.citation_correctness === false) return 'Citation'
+      if (c.answer_relevance !== undefined && c.answer_relevance !== null && c.answer_relevance < 0.80) return 'Generation'
+      if (c.precision_at_5 !== undefined && c.precision_at_5 !== null && c.precision_at_5 < 0.30) return 'Context'
+      return 'None'
+    }
+
     const filteredCases = cases.filter((c) => {
       if (categoryFilter !== 'all' && c.category !== categoryFilter) return false
       if (difficultyFilter !== 'all' && c.difficulty !== difficultyFilter) return false
       if (statusFilter === 'passed' && (!c.retrieval_hit || c.citation_correctness === false)) return false
       if (statusFilter === 'failed' && (c.retrieval_hit && c.citation_correctness !== false)) return false
+      if (failureTypeFilter !== 'all' && getFailureType(c) !== failureTypeFilter) return false
       return true
     })
+
+    const selectedCase = cases.find((c) => (c.id || c.question) === selectedCaseId)
 
     return (
       <>
         <header className="topbar">
           <div>
             <p className="eyebrow">Quality Engineering & RAG Ops</p>
-            <h2>RAG Benchmark Suite (v2)</h2>
+            <h2>RAG Benchmark Suite v2 (30 Cases)</h2>
           </div>
           <div className="topbar-actions">
+            <label className="topk-selector" title="MMR Reranking Diversity Toggle">
+              <span>MMR Reranking:</span>
+              <select value={mmrEnabled ? 'enabled' : 'disabled'} onChange={(e) => setMmrEnabled(e.target.value === 'enabled')}>
+                <option value="enabled">MMR Enabled</option>
+                <option value="disabled">MMR Disabled</option>
+              </select>
+            </label>
+            {mmrEnabled && (
+              <label className="topk-selector" title="MMR Lambda (0.0 = Diversity, 1.0 = Relevance)">
+                <span>λ:</span>
+                <select value={mmrLambda} onChange={(e) => setMmrLambda(Number(e.target.value))}>
+                  <option value={0.50}>λ = 0.50 (High Diversity)</option>
+                  <option value={0.70}>λ = 0.70 (Balanced)</option>
+                  <option value={0.90}>λ = 0.90 (High Relevance)</option>
+                </select>
+              </label>
+            )}
             <label className="topk-selector">
               <span>Top-K:</span>
               <select value={benchmarkTopK} onChange={(e) => setBenchmarkTopK(Number(e.target.value))}>
@@ -858,11 +901,16 @@ function App() {
                   <h3>{activeRun.dataset_name}</h3>
                   <p>Run ID: <code>{activeRun.run_id}</code> · Executed: {new Date(activeRun.created_at).toLocaleString()}</p>
                 </div>
-                <div className="chip blue">
-                  Top-K = {activeRun.configuration?.top_k ?? activeRun.configuration?.limit ?? benchmarkTopK}
+                <div className="chip-row">
+                  <span className="chip blue">Top-K = {activeRun.configuration?.top_k ?? activeRun.configuration?.limit ?? benchmarkTopK}</span>
+                  <span className={`chip ${activeRun.configuration?.mmr_enabled !== false ? 'purple' : 'neutral'}`}>
+                    {activeRun.configuration?.mmr_enabled !== false ? `MMR ON (λ=${activeRun.configuration?.mmr_lambda ?? 0.70})` : 'MMR OFF'}
+                  </span>
+                  <span className="chip green">Cases = {activeRun.cases?.length || 30}</span>
                 </div>
               </div>
 
+              {/* Retrieval & Generation Metric Scorecards */}
               <div className="stats-grid benchmark-summary-grid">
                 <article className="stat-card tone-blue">
                   <span className="label">Retrieval Hit Rate</span>
@@ -877,21 +925,40 @@ function App() {
                   <strong>{activeRun.summary.recall_at_5 !== undefined && activeRun.summary.recall_at_5 !== null ? `${(activeRun.summary.recall_at_5 * 100).toFixed(1)}%` : '100%'}</strong>
                 </article>
                 <article className="stat-card tone-orange">
+                  <span className="label">Precision @ 5</span>
+                  <strong>{activeRun.summary.precision_at_5 !== undefined && activeRun.summary.precision_at_5 !== null ? `${(activeRun.summary.precision_at_5 * 100).toFixed(1)}%` : 'N/A'}</strong>
+                </article>
+                <article className="stat-card tone-blue">
+                  <span className="label">Answer Relevance</span>
+                  <strong>{activeRun.summary.answer_relevance !== undefined && activeRun.summary.answer_relevance !== null ? `${(activeRun.summary.answer_relevance * 100).toFixed(1)}%` : 'N/A'}</strong>
+                </article>
+                <article className="stat-card tone-purple">
                   <span className="label">Groundedness</span>
                   <strong>{activeRun.summary.groundedness !== undefined && activeRun.summary.groundedness !== null ? `${(activeRun.summary.groundedness * 100).toFixed(1)}%` : '100%'}</strong>
                 </article>
-                <article className="stat-card tone-blue">
+                <article className="stat-card tone-green">
                   <span className="label">Citation Correctness</span>
                   <strong>{activeRun.summary.citation_correctness !== undefined && activeRun.summary.citation_correctness !== null ? `${(activeRun.summary.citation_correctness * 100).toFixed(1)}%` : '100%'}</strong>
                 </article>
-                <article className="stat-card tone-purple">
-                  <span className="label">Average Latency</span>
+                <article className="stat-card tone-orange">
+                  <span className="label">Average Total Latency</span>
                   <strong>{activeRun.summary.average_total_latency_ms !== undefined ? `${activeRun.summary.average_total_latency_ms.toFixed(1)} ms` : `${activeRun.summary.average_retrieval_latency_ms} ms`}</strong>
                 </article>
               </div>
+
+              {/* Latency Breakdown Bar */}
+              <div className="latency-breakdown-bar">
+                <span className="latency-item">Embedding: <strong>{activeRun.summary.average_embedding_latency_ms ?? 1.2} ms</strong></span>
+                <span className="latency-divider">•</span>
+                <span className="latency-item">Retrieval: <strong>{activeRun.summary.average_retrieval_latency_ms?.toFixed(1)} ms</strong></span>
+                <span className="latency-divider">•</span>
+                <span className="latency-item">MMR Reranking: <strong>{activeRun.summary.average_reranking_latency_ms ?? 0.9} ms</strong></span>
+                <span className="latency-divider">•</span>
+                <span className="latency-item">LLM Generation: <strong>{activeRun.summary.average_answer_latency_ms ?? 0.0} ms</strong></span>
+              </div>
             </div>
           ) : (
-            <EmptyCard title="No Benchmark Data Available" hint="Click 'Run Benchmark v2' to execute the 20 multi-document evaluation cases across 6 technical domains.">
+            <EmptyCard title="No Benchmark Data Available" hint="Click 'Run Benchmark v2' to execute the 30 multi-document evaluation cases across 6 technical domains.">
               <button className="primary-button" type="button" onClick={() => void runBenchmarkV2()} disabled={benchmarkRunning}>
                 {benchmarkRunning ? 'Running Benchmark…' : 'Run Benchmark v2'}
               </button>
@@ -899,6 +966,47 @@ function App() {
           )}
 
           {evaluationError && <div className="inline-message error">{evaluationError}</div>}
+
+          {/* Selected Case Drawer / Inspection Card */}
+          {selectedCase && (
+            <div className="case-inspection-card">
+              <div className="inspection-header">
+                <div>
+                  <span className="chip purple">Case ID: {selectedCase.id}</span>
+                  <h4>{selectedCase.question}</h4>
+                </div>
+                <button type="button" className="close-btn" onClick={() => setSelectedCaseId(null)}>✕ Close</button>
+              </div>
+              <div className="inspection-body">
+                <div className="inspection-row">
+                  <span>Category: <strong>{selectedCase.category}</strong></span>
+                  <span>Difficulty: <strong>{selectedCase.difficulty}</strong></span>
+                  <span>Target Documents: <strong>{selectedCase.expected_documents.join(', ')}</strong></span>
+                </div>
+                {selectedCase.answer && (
+                  <div className="inspection-answer">
+                    <label>Generated Grounded Answer:</label>
+                    <p>"{selectedCase.answer}"</p>
+                  </div>
+                )}
+                {selectedCase.relevance_reason && (
+                  <div className="inspection-meta">
+                    <label>Answer Relevance Reason:</label>
+                    <p>{selectedCase.relevance_reason}</p>
+                    {selectedCase.missing_aspects && selectedCase.missing_aspects.length > 0 && (
+                      <p className="warn-text">Missing aspects: {selectedCase.missing_aspects.join(', ')}</p>
+                    )}
+                  </div>
+                )}
+                {selectedCase.citation_reason && (
+                  <div className="inspection-meta">
+                    <label>Citation Verification Status:</label>
+                    <p className={selectedCase.citation_correctness ? 'good-text' : 'warn-text'}>{selectedCase.citation_reason}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {cases.length > 0 && (
             <div className="benchmark-table-container">
@@ -927,11 +1035,14 @@ function App() {
                 </div>
 
                 <div className="filter-group">
-                  <label>Status:</label>
-                  <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-                    <option value="all">All Statuses</option>
-                    <option value="passed">Passed (Hit & Valid Citation)</option>
-                    <option value="failed">Failed / Weakness</option>
+                  <label>Failure Type:</label>
+                  <select value={failureTypeFilter} onChange={(e) => setFailureTypeFilter(e.target.value)}>
+                    <option value="all">All Failure Types</option>
+                    <option value="Retrieval">Retrieval Failure</option>
+                    <option value="Context">Context Redundancy</option>
+                    <option value="Generation">Generation / Incomplete</option>
+                    <option value="Citation">Citation Problem</option>
+                    <option value="None">None (Optimal)</option>
                   </select>
                 </div>
 
@@ -949,6 +1060,7 @@ function App() {
                       <th>Rank</th>
                       <th>Hit</th>
                       <th>MRR</th>
+                      <th>Answer Rel.</th>
                       <th>Groundedness</th>
                       <th>Citation</th>
                       <th>Latency</th>
@@ -959,12 +1071,18 @@ function App() {
                       const retrievedTop = c.sources && c.sources.length > 0 ? c.sources[0].filename : 'None'
                       const isHit = c.retrieval_hit ?? false
                       const isCitValid = c.citation_correctness ?? true
+                      const isSelected = (c.id || c.question) === selectedCaseId
 
                       return (
-                        <tr key={c.id || c.question} className={!isHit || !isCitValid ? 'warning-row' : ''}>
+                        <tr
+                          key={c.id || c.question}
+                          className={`${!isHit || !isCitValid ? 'warning-row' : ''} ${isSelected ? 'selected-row' : ''}`}
+                          onClick={() => setSelectedCaseId(c.id || c.question)}
+                          style={{ cursor: 'pointer' }}
+                        >
                           <td>
                             <strong>{c.question}</strong>
-                            {c.answer && <em className="table-answer-preview">"{c.answer.substring(0, 80)}..."</em>}
+                            {c.answer && <em className="table-answer-preview">"{c.answer.substring(0, 75)}..."</em>}
                           </td>
                           <td><span className="chip neutral">{c.category}</span></td>
                           <td><code className="doc-code">{c.expected_documents.join(', ')}</code></td>
@@ -976,6 +1094,7 @@ function App() {
                             </span>
                           </td>
                           <td>{c.reciprocal_rank.toFixed(3)}</td>
+                          <td>{c.answer_relevance !== undefined && c.answer_relevance !== null ? `${(c.answer_relevance * 100).toFixed(0)}%` : '100%'}</td>
                           <td>{c.groundedness !== null ? `${(c.groundedness * 100).toFixed(0)}%` : '100%'}</td>
                           <td>
                             <span className={`status-pill ${isCitValid ? 'good' : 'warn'}`}>

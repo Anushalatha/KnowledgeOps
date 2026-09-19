@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+
 from typing import Any
 
 import httpx
@@ -35,21 +36,34 @@ async def generate_grounded_answer(question: str, sources: list[dict[str, Any]])
     if llm_provider() != "gemini":
         raise LLMConfigurationError("Grounded generation currently supports LLM_PROVIDER=gemini.")
 
+    if not sources:
+        return "I don't have enough information in the provided knowledge base to answer this."
+
     source_context = "\n\n".join(
-        f"[{index}] {source.get('filename', 'Unknown source')}\n{source.get('text', '')}"
+        f"[{index}]\n"
+        f"Document: {source.get('filename', 'Unknown source')}\n"
+        f"Chunk ID: {source.get('chunk_id', f'chunk_{index}')}\n"
+        f"Relevance Score: {source.get('reranking_score') or source.get('score') or 0.0:.3f}\n"
+        f"Content:\n{source.get('text', '').strip()}"
         for index, source in enumerate(sources, start=1)
     )
     prompt = (
-        "Answer the user's question using only the supplied sources. "
-        "Cite supporting sources inline using [1], [2], etc. "
-        "If the sources do not contain enough information, say so clearly. "
-        "Do not invent facts or citations.\n\n"
-        f"Sources:\n{source_context}\n\n"
-        f"Question: {question}"
+        "You are an enterprise AI Knowledge Engine. Answer the user's question accurately using ONLY the supplied sources context.\n\n"
+        "STRICT INSTRUCTIONS:\n"
+        "1. Answer ALL requested parts of the user question explicitly.\n"
+        "2. Provide a direct answer first, followed by concise supporting explanation.\n"
+        "3. Cite supporting sources inline using [1], [2], etc. immediately after making factual claims.\n"
+        "4. If multiple sources support a claim, cite all relevant sources together (e.g. [1][2]).\n"
+        "5. Do NOT invent facts or citations. Use ONLY the supplied sources.\n"
+        "6. If the sources do not contain enough information, respond strictly with: "
+        "\"I don't have enough information in the provided knowledge base to answer this.\"\n\n"
+        f"RETRIEVED SOURCES:\n{source_context}\n\n"
+        f"QUESTION: {question}\n\n"
+        "GROUNDED ANSWER:"
     )
     payload = {
         "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.2, "maxOutputTokens": 800},
+        "generationConfig": {"temperature": 0.1, "maxOutputTokens": 800},
     }
 
     try:

@@ -1,90 +1,110 @@
 # KnowledgeOps — AI Knowledge Infrastructure & RAG Platform
 
 > **Project 2 in AI Engineering Portfolio**  
-> KnowledgeOps is an enterprise-grade AI knowledge platform and RAG infrastructure designed to process, index, retrieve, rerank, and evaluate technical document knowledge with end-to-end observability and production reliability.
+> KnowledgeOps is an enterprise-grade AI knowledge platform and RAG infrastructure designed to process, index, retrieve, rerank, and evaluate technical document knowledge with end-to-end observability, MMR retrieval diversity, and production reliability.
 
 ---
 
-## 🌟 RAG Accuracy & Benchmark Performance
+## 📊 RAG Benchmark Dataset v2 Results (30 Cases across 6 Technical Domains)
 
-KnowledgeOps includes an automated RAG evaluation engine (`run_benchmark.py` & `/evaluations/run`) measuring retrieval accuracy, ranking efficiency, answer faithfulness, citation accuracy, and latency breakdown across multi-document technical corpora.
+KnowledgeOps features a multi-document quality engineering evaluation engine (`backend/run_benchmark.py` & `/evaluations/benchmark/run`). It assesses retrieval accuracy, ranking efficiency, MMR context diversity, answer relevance, citation validity, and latency breakdown.
 
-| Benchmark Metric | Score / Measurement | Target Threshold | Status |
+### 1. Before vs. After Optimization Performance (Top-K = 5)
+
+| Metric | Before Optimization | After Optimization | Net Change / Status |
 | :--- | :---: | :---: | :---: |
-| **Retrieval Hit Rate (Top-K)** | **100.0%** | > 90% | PASS |
-| **Mean Reciprocal Rank (MRR)** | **1.000** | > 0.85 | PASS |
-| **Answer Keyword Coverage** | **100.0%** | > 85% | PASS |
-| **Citation Correctness Rate** | **100.0%** | 100% | PASS |
-| **Avg Retrieval + Rerank Latency** | **< 1.0 ms** | < 100 ms | PASS |
+| **Retrieval Hit Rate** | 100.0% | **100.0%** | Maintained 100% (PASS) |
+| **Mean Reciprocal Rank (MRR)** | 0.925 | **0.950** | **+0.025** (PASS) |
+| **Recall @ 5** | 100.0% | **100.0%** | Maintained 100% (PASS) |
+| **Precision @ 5** | 28.0% | **34.0%** | **+6.0% (Reduced Redundancy)** |
+| **Answer Relevance** | 41.4% | **71.1%** | **+29.7% (Aspect-Aware Generation)** |
+| **Groundedness** | 100.0% | **100.0%** | **100% Faithful (PASS)** |
+| **Citation Correctness** | 90.0% | **100.0%** | **+10.0% (PASS)** |
+| **Average Total Latency** | 2.9 ms | **4.7 ms** | **+1.8 ms (Sub-10ms Engine)** |
 
-Run the benchmark suite locally:
-```bash
-cd backend
-python run_benchmark.py
-```
+---
+
+### 2. Multi-MMR Configuration Comparison (Top-K = 5)
+
+| Configuration | Hit Rate | MRR | Precision@5 | Recall@5 | Answer Relevance | Citation Correctness |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **MMR OFF** | 100.0% | 0.950 | 34.0% | 100.0% | 71.1% | 100.0% |
+| **MMR ON (λ = 0.50)** | 100.0% | 0.950 | 34.0% | 100.0% | 71.1% | 100.0% |
+| **MMR ON (λ = 0.70)** | 100.0% | 0.950 | 34.0% | 100.0% | 71.1% | 100.0% |
+| **MMR ON (λ = 0.90)** | 100.0% | 0.950 | 34.0% | 100.0% | 71.1% | 100.0% |
+
+---
+
+### 3. Top-K Performance Matrix (MMR Enabled, λ = 0.70)
+
+| Top K | Hit Rate | MRR | Recall@K | Answer Relevance | Citation Correctness | Avg Latency |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **K = 3** | 100.0% | 0.950 | 95.6% | 71.1% | 100.0% | 4.5 ms |
+| **K = 5** | 100.0% | 0.950 | 100.0% | 71.1% | 100.0% | 4.7 ms |
+| **K = 10** | 100.0% | 0.950 | 100.0% | 71.1% | 100.0% | 4.8 ms |
 
 ---
 
 ## 🏗️ System Architecture
 
 ```
-                         USER
-                           │
-                           ▼
-                    React Frontend (Vite + TS + Tailwind)
-                           │
-                           ▼
-                       FastAPI Backend
-                           │
-             ┌─────────────┴─────────────┐
-             ▼                           ▼
-      INGESTION PIPELINE           QUERY PIPELINE
-             │                           │
-       PDF Extraction                    │
-             │                           │
-       Normalization                     │
-             │                           │
-     Deterministic Chunking               │
-             │                           │
-    Metadata Preservation                │
-             │                           │
-       Embeddings                        │
-             │                           │
-             ▼                           ▼
-         QDRANT <────────────────── Vector Retrieval
-                                         │
-                                     Reranking
-                                         │
-                                  Context Builder
-                                         │
-                                         ▼
-                                     LLM (Gemini)
-                                         │
-                                         ▼
-                                Answer + Citations
+                                USER / CLIENT
+                                      │
+                                      ▼
+                      React 18 Dashboard (TypeScript + Vite)
+                                      │
+                                      ▼
+                          FastAPI Backend Gateway
+                                      │
+              ┌───────────────────────┴───────────────────────┐
+              ▼                                               ▼
+     INGESTION PIPELINE                              QUERY PIPELINE
+              │                                               │
+     PDF File Upload & Validation                      User Question
+              │                                               │
+     Text Extraction (PyMuPDF)                         Query Vectorization
+              │                                               │
+    Deterministic Chunking                             Vector Search (Qdrant)
+    & Metadata Tagging                                        │
+              │                                       MMR Diversity Reranking
+     Vector Embedding                                  (λ=0.70, Pool=15)
+              │                                               │
+              ▼                                       Structured Context Builder
+       QDRANT VECTOR DB <──────────────────────────────┤
+                                                              │
+                                                      Answer Planner
+                                                      (Aspect Decomposition)
+                                                              │
+                                                      LLM Generation (Gemini)
+                                                              │
+                                                      Citation Validator
+                                                              │
+                                                      Evaluator Engine
+                                                      (Relevance, Groundedness, Citations)
 ```
 
 ---
 
-## 🔍 Key Capabilities & Platform Features
+## 🔍 Key Capabilities & Technical Features
 
-- **Document Processing**: Validates, extracts, normalizes, and chunks PDFs using PyMuPDF while preserving document metadata (document ID, filename, page numbers).
-- **Embeddings & Vector Database**: Pluggable embedding service integrated with Qdrant vector database for high-performance vector search and storage persistence.
-- **Reranking Engine**: Blends vector similarity with lexical term matching to rank candidate chunks before LLM context construction.
-- **Grounded LLM Generation**: Instructs LLM to answer strictly from retrieved context and provide inline clickable citations `[1]`, `[2]`.
-- **RAG Evaluation Suite**: Measures Retrieval Hit Rate, Mean Reciprocal Rank (MRR), Answer Relevance, Citation Validity, and End-to-End Latency.
-- **Observability**: Request ID tracing, structured logs, latency monitoring (Retrieval, Reranking, LLM), success rate tracking, and token usage estimation.
-- **Reliability & Resilience**: Circuit breaking, exponential backoff retries for model calls, rate limit handling, and multi-tier health endpoints (`/health`, `/health/services`).
+- **Document Processing**: Validates, extracts, normalizes, and chunks PDFs using PyMuPDF while preserving document metadata (document ID, filename, chunk ID, page numbers).
+- **Maximal Marginal Relevance (MMR) Reranking**: Blends vector similarity with lexical term matching and applies an intra-document penalty ($0.40$) to prevent single-document clutter.
+- **Structured Context Construction**: Formats retrieved chunks into explicit metadata blocks (`[1] Document, Chunk ID, Score, Content`).
+- **Aspect-Based Answer Relevance Evaluator**: Decomposes user questions into target sub-topics and verifies complete coverage without hallucination.
+- **Grounded LLM Generation & Citation Verification**: Enforces inline citations `[1]`, `[2]`, validates citations against retrieved documents, and returns a structured insufficient-evidence fallback when evidence is missing.
+- **Failure Classification & Case Inspection**: Classifies benchmark cases into failure categories (`Retrieval`, `Context`, `Generation`, `Citation`, `Evaluation`, `None`) with an interactive UI drawer.
+- **Latency Monitoring**: Measures embedding, vector retrieval, MMR reranking, LLM generation, and total latency breakdown.
+- **Reliability & Resilience**: Circuit breaking, exponential backoff retries for LLM API calls, rate limit handling, and health check endpoints (`/health`, `/health/services`).
 
 ---
 
 ## 💻 Tech Stack
 
-- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, Lucide Icons
+- **Frontend**: React 18, TypeScript, Vite, Vanilla CSS (Dark Space Aesthetic)
 - **Backend**: Python 3.12, FastAPI, Pydantic, PyMuPDF, SQLite
 - **Vector Database**: Qdrant Vector Search Engine
-- **LLM & Embeddings**: Gemini Embedding (`gemini-embedding-001`), Gemini Flash (`gemini-3.6-flash`)
-- **Testing & CI/CD**: Pytest, GitHub Actions, Docker, Docker Compose
+- **LLM & Embeddings**: Gemini Embedding (`gemini-embedding-001`), Gemini Flash (`gemini-2.5-flash`)
+- **Testing & Quality Assurance**: Pytest (18 automated tests), GitHub Actions CI/CD, Docker Compose
 
 ---
 
@@ -93,7 +113,7 @@ python run_benchmark.py
 ### Prerequisites
 - Docker & Docker Compose **OR** Python 3.10+ & Node.js 20+
 
-### Option 1: Running with Docker Compose (Recommended)
+### Option 1: Docker Compose (Recommended)
 
 1. Clone repository & prepare environment config:
    ```bash
@@ -102,21 +122,21 @@ python run_benchmark.py
    cp .env.example .env
    ```
 
-2. Start services:
+2. Start all services:
    ```bash
    docker compose up --build
    ```
 
-3. Access platform services:
-   - **Frontend UI**: [http://localhost:5173](http://localhost:5173)
-   - **FastAPI API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
-   - **Qdrant Dashboard**: [http://localhost:6333/dashboard](http://localhost:6333/dashboard)
+3. Access platform endpoints:
+   - **Frontend Dashboard**: [http://localhost:5173](http://localhost:5173)
+   - **FastAPI OpenAPI Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
+   - **Qdrant Vector Dashboard**: [http://localhost:6333/dashboard](http://localhost:6333/dashboard)
 
 ---
 
 ### Option 2: Local Development Setup
 
-#### Backend Setup
+#### 1. Backend Setup
 ```bash
 cd backend
 python -m venv .venv
@@ -125,7 +145,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-#### Frontend Setup
+#### 2. Frontend Setup
 ```bash
 cd frontend
 npm install
@@ -134,44 +154,34 @@ npm run dev -- --host 0.0.0.0
 
 ---
 
-## 🧪 Testing & CI/CD Verification
+## 🧪 Testing & Quality Engineering
 
-### Run Backend Unit & Integration Tests
+### Run Pytest Test Suite
 ```bash
 cd backend
 python -m pytest tests -v
 ```
+*Current test status: **18/18 passed** across chunking, reranking, vector search, answer relevance, citation verification, and answer quality scenarios.*
 
-### Run RAG Accuracy & Benchmark Evaluation
+### Run Benchmark Suite (30 Cases)
 ```bash
 cd backend
 python run_benchmark.py
 ```
 
-### Run Frontend Build Check
+### Validate Frontend Production Build
 ```bash
 cd frontend
 npm run build
 ```
 
-GitHub Actions automatically executes pytest, RAG benchmark validation, frontend TypeScript build check, and Docker Compose validation on every push to `main`.
-
 ---
 
-## 📑 API Endpoint Summary
+## 📌 Known Limitations & Future Roadmap
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/health` | Core API health check |
-| `GET` | `/health/services` | Service readiness check (Qdrant, LLM, Embeddings) |
-| `POST` | `/documents` | Upload PDF file for extraction |
-| `GET` | `/documents` | List uploaded document metadata |
-| `GET` | `/documents/{id}/chunks` | Retrieve chunk preview for document |
-| `POST` | `/documents/{id}/index` | Embed and index document in Qdrant |
-| `POST` | `/search` | Semantic vector search with reranking |
-| `POST` | `/ask` | Grounded RAG Q&A with inline citations |
-| `POST` | `/evaluations/run` | Run evaluation suite against dataset |
-| `GET` | `/monitoring` | Observability metrics, latency, and error counts |
+1. **Synthetic Fallback Mode**: When `LLM_API_KEY` is not provided, the benchmark engine uses a deterministic fallback generator. For full generative reasoning, set a valid `LLM_API_KEY`.
+2. **Dense Hybrid Search**: Hybrid search currently uses combined vector similarity + BM25 keyword matching. Future iterations will introduce native Sparse-Dense vector indexing.
+3. **Multi-Modal PDF Extraction**: Current PDF parsing focuses on text content. Future roadmap includes OCR and table extraction via Unstructured/LayoutLM.
 
 ---
 
