@@ -9,9 +9,9 @@ The system combines document processing, vector retrieval, MMR-based
 reranking, grounded generation, citation validation, automated RAG
 evaluation, observability, and reliability mechanisms into a single
 web-based platform.
-
 Rather than focusing only on question answering, KnowledgeOps treats RAG
 as an engineering system that can be measured, inspected, and improved.
+
 ---
 
 ## 📊 RAG Benchmark Dataset v2 Results (30 Cases across 6 Technical Domains)
