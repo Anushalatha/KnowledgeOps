@@ -1,7 +1,17 @@
 # KnowledgeOps — AI Knowledge Infrastructure & RAG Platform
 
 > **Project 2 in AI Engineering Portfolio**  
-> KnowledgeOps is an enterprise-grade AI knowledge platform and RAG infrastructure designed to process, index, retrieve, rerank, and evaluate technical document knowledge with end-to-end observability, MMR retrieval diversity, and production reliability.
+> KnowledgeOps is an AI knowledge infrastructure platform for ingesting,
+> indexing, retrieving, reranking, and evaluating technical document
+> knowledge.
+
+The system combines document processing, vector retrieval, MMR-based
+reranking, grounded generation, citation validation, automated RAG
+evaluation, observability, and reliability mechanisms into a single
+web-based platform.
+
+Rather than focusing only on question answering, KnowledgeOps treats RAG
+as an engineering system that can be measured, inspected, and improved.
 
 ---
 
@@ -13,14 +23,16 @@ KnowledgeOps features a multi-document quality engineering evaluation engine (`b
 
 | Metric | Before Optimization | After Optimization | Net Change / Status |
 | :--- | :---: | :---: | :---: |
-| **Retrieval Hit Rate** | 100.0% | **100.0%** | Maintained 100% (PASS) |
-| **Mean Reciprocal Rank (MRR)** | 0.925 | **0.950** | **+0.025** (PASS) |
-| **Recall @ 5** | 100.0% | **100.0%** | Maintained 100% (PASS) |
-| **Precision @ 5** | 28.0% | **34.0%** | **+6.0% (Reduced Redundancy)** |
-| **Answer Relevance** | 41.4% | **71.1%** | **+29.7% (Aspect-Aware Generation)** |
-| **Groundedness** | 100.0% | **100.0%** | **100% Faithful (PASS)** |
-| **Citation Correctness** | 90.0% | **100.0%** | **+10.0% (PASS)** |
-| **Average Total Latency** | 2.9 ms | **4.7 ms** | **+1.8 ms (Sub-10ms Engine)** |
+| **Retrieval Hit Rate** | 100.0% | **100.0%** | Maintained on benchmark |
+| **Mean Reciprocal Rank (MRR)** | 0.925 | **0.950** | **+0.025** |
+| **Recall @ 5** | 100.0% | **100.0%** | Maintained on benchmark |
+| **Precision @ 5** | 28.0% | **34.0%** | **+6.0 percentage points** |
+| **Answer Relevance** | 41.4% | **71.1%** | **+29.7 percentage points** |
+| **Groundedness** | 100.0% | **100.0%** | Maintained on benchmark |
+| **Citation Correctness** | 90.0% | **100.0%** | **+10.0 percentage points** |
+| **Average Total Latency** | 2.9 ms | **4.7 ms** | **+1.8 ms** |
+
+> **Latency note:** Benchmark latency represents the measured execution path under the configured benchmark environment. It should not be interpreted as external Gemini API network latency or real-world production response latency.
 
 ---
 
@@ -32,6 +44,9 @@ KnowledgeOps features a multi-document quality engineering evaluation engine (`b
 | **MMR ON (λ = 0.50)** | 100.0% | 0.950 | 34.0% | 100.0% | 71.1% | 100.0% |
 | **MMR ON (λ = 0.70)** | 100.0% | 0.950 | 34.0% | 100.0% | 71.1% | 100.0% |
 | **MMR ON (λ = 0.90)** | 100.0% | 0.950 | 34.0% | 100.0% | 71.1% | 100.0% |
+
+**MMR Interpretation:**  
+Across the current 30-case benchmark, the tested MMR configurations produced identical aggregate metrics. This suggests that the current dataset does not contain enough retrieval-redundancy cases to clearly distinguish the different MMR settings. MMR is therefore retained as a configurable retrieval strategy rather than being presented as a benchmark-proven improvement.
 
 ---
 
@@ -47,7 +62,7 @@ KnowledgeOps features a multi-document quality engineering evaluation engine (`b
 
 ## 🏗️ System Architecture
 
-```
+```text
                                 USER / CLIENT
                                       │
                                       ▼
@@ -81,8 +96,6 @@ KnowledgeOps features a multi-document quality engineering evaluation engine (`b
                                                               │
                                                       Evaluator Engine
                                                       (Relevance, Groundedness, Citations)
-```
-
 ---
 
 ## 🔍 Key Capabilities & Technical Features
@@ -104,8 +117,7 @@ KnowledgeOps features a multi-document quality engineering evaluation engine (`b
 - **Backend**: Python 3.12, FastAPI, Pydantic, PyMuPDF, SQLite
 - **Vector Database**: Qdrant Vector Search Engine
 - **LLM & Embeddings**: Gemini Embedding (`gemini-embedding-001`), Gemini Flash (`gemini-2.5-flash`)
-- **Testing & Quality Assurance**: Pytest (18 automated tests), GitHub Actions CI/CD, Docker Compose
-
+- **Testing & Quality Assurance**: Pytest (38 automated tests), GitHub Actions CI/CD, Docker Compose
 ---
 
 ## 🚀 Quick Start Guide
@@ -161,7 +173,7 @@ npm run dev -- --host 0.0.0.0
 cd backend
 python -m pytest tests -v
 ```
-*Current test status: **18/18 passed** across chunking, reranking, vector search, answer relevance, citation verification, and answer quality scenarios.*
+*Current test status: **38/38 passed** across chunking, reranking, vector search, answer relevance, citation verification, reliability, and RAG pipeline scenarios.*
 
 ### Run Benchmark Suite (30 Cases)
 ```bash
