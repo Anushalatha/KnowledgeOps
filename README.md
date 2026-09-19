@@ -95,7 +95,7 @@ Across the current 30-case benchmark, the tested MMR configurations produced ide
                                                               │
                                                       Evaluator Engine
                                                       (Relevance, Groundedness, Citations)
----
+```
 
 ## 🔍 Key Capabilities & Technical Features
 
@@ -108,8 +108,6 @@ Across the current 30-case benchmark, the tested MMR configurations produced ide
 - **Latency Monitoring**: Measures embedding, vector retrieval, MMR reranking, LLM generation, and total latency breakdown.
 - **Reliability & Resilience**: Circuit breaking, exponential backoff retries for LLM API calls, rate limit handling, and health check endpoints (`/health`, `/health/services`).
 
----
-
 ## 💻 Tech Stack
 
 - **Frontend**: React 18, TypeScript, Vite, Vanilla CSS (Dark Space Aesthetic)
@@ -117,16 +115,17 @@ Across the current 30-case benchmark, the tested MMR configurations produced ide
 - **Vector Database**: Qdrant Vector Search Engine
 - **LLM & Embeddings**: Gemini Embedding (`gemini-embedding-001`), Gemini Flash (`gemini-2.5-flash`)
 - **Testing & Quality Assurance**: Pytest (38 automated tests), GitHub Actions CI/CD, Docker Compose
----
 
 ## 🚀 Quick Start Guide
 
 ### Prerequisites
+
 - Docker & Docker Compose **OR** Python 3.10+ & Node.js 20+
 
 ### Option 1: Docker Compose (Recommended)
 
 1. Clone repository & prepare environment config:
+
    ```bash
    git clone https://github.com/your-username/KnowledgeOps.git
    cd KnowledgeOps
@@ -134,14 +133,15 @@ Across the current 30-case benchmark, the tested MMR configurations produced ide
    ```
 
 2. Start all services:
+
    ```bash
    docker compose up --build
    ```
 
 3. Access platform endpoints:
-   - **Frontend Dashboard**: [http://localhost:5173](http://localhost:5173)
-   - **FastAPI OpenAPI Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
-   - **Qdrant Vector Dashboard**: [http://localhost:6333/dashboard](http://localhost:6333/dashboard)
+   - **Frontend Dashboard**: http://localhost:5173
+   - **FastAPI OpenAPI Docs**: http://localhost:8000/docs
+   - **Qdrant Vector Dashboard**: http://localhost:6333/dashboard
 
 ---
 
