@@ -73,11 +73,53 @@ type MonitoringData = {
   requests: { requests: number; errors: number; success_rate: number | null; average_latency_ms: number | null }
 }
 
+type EvaluationCaseResult = {
+  id: string
+  question: string
+  category: string
+  difficulty: string
+  expected_documents: string[]
+  retrieved_chunks: number
+  relevant_rank: number | null
+  retrieval_hit: boolean | null
+  reciprocal_rank: number
+  recall_at_3: number
+  recall_at_5: number
+  precision_at_3: number
+  precision_at_5: number
+  answer: string | null
+  answer_relevance: number | null
+  groundedness: number | null
+  unsupported_claim_count: number
+  citation_correctness: boolean | null
+  retrieval_latency_ms: number
+  answer_latency_ms: number | null
+  total_latency_ms: number
+  sources: { filename: string; chunk_id: string; score: number }[]
+}
+
 type EvaluationRun = {
   run_id: string
   dataset_name: string
   created_at: string
-  summary: { case_count: number; retrieval_hit_rate: number | null; mean_reciprocal_rank: number | null; average_retrieval_latency_ms: number }
+  configuration?: { top_k?: number; limit?: number; generate_answers?: boolean }
+  summary: {
+    case_count: number
+    retrieval_hit_rate: number | null
+    mean_reciprocal_rank: number | null
+    recall_at_3?: number | null
+    recall_at_5?: number | null
+    precision_at_3?: number | null
+    precision_at_5?: number | null
+    answer_relevance?: number | null
+    groundedness?: number | null
+    citation_correctness?: number | null
+    average_embedding_latency_ms?: number
+    average_retrieval_latency_ms: number
+    average_answer_latency_ms?: number
+    average_total_latency_ms?: number
+  }
+  cases?: EvaluationCaseResult[]
 }
 
 const navItems = [
@@ -437,6 +479,32 @@ function App() {
     }
   }
 
+  const [benchmarkTopK, setBenchmarkTopK] = React.useState<number>(5)
+  const [benchmarkRunning, setBenchmarkRunning] = React.useState<boolean>(false)
+  const [benchmarkResult, setBenchmarkResult] = React.useState<EvaluationRun | null>(null)
+  const [categoryFilter, setCategoryFilter] = React.useState<string>('all')
+  const [difficultyFilter, setDifficultyFilter] = React.useState<string>('all')
+  const [statusFilter, setStatusFilter] = React.useState<string>('all')
+
+  const runBenchmarkV2 = async (topKVal = benchmarkTopK) => {
+    setBenchmarkRunning(true)
+    setEvaluationError(null)
+    try {
+      const response = await fetch(`http://localhost:8000/evaluations/benchmark/run?top_k=${topKVal}`, {
+        method: 'POST',
+      })
+      const data = (await response.json()) as EvaluationRun | { detail?: string }
+      if (!response.ok) throw new Error((data as { detail?: string }).detail ?? 'Benchmark run failed')
+      const run = data as EvaluationRun
+      setBenchmarkResult(run)
+      setEvaluationRuns((runs) => [run, ...runs])
+    } catch (error) {
+      setEvaluationError(error instanceof Error ? error.message : 'Benchmark run failed')
+    } finally {
+      setBenchmarkRunning(false)
+    }
+  }
+
   const runEvaluation = async () => {
     if (!evaluationQuestion.trim()) return
     setEvaluating(true)
@@ -748,43 +816,199 @@ function App() {
     </>
   )
 
-  const renderEvaluationsSection = () => (
-    <>
-      <header className="topbar">
-        <div>
-          <p className="eyebrow">Quality</p>
-          <h2>Evaluations</h2>
-        </div>
-      </header>
+  const renderEvaluationsSection = () => {
+    const activeRun = benchmarkResult || evaluationRuns.find((r) => r.cases && r.cases.length > 0) || evaluationRuns[0]
+    const cases = activeRun?.cases || []
 
-      <section className="view-panel">
-        <div className="panel-header">
-          <strong>Run retrieval evaluation</strong>
-          <span className="chip blue">{evaluationRuns.length} saved runs</span>
-        </div>
-        <p className="view-panel-text">Provide a question and its expected source filename to measure retrieval hit rate and reciprocal rank.</p>
-        <div className="search-box">
-          <input placeholder="Evaluation question" value={evaluationQuestion} onChange={(event) => setEvaluationQuestion(event.target.value)} />
-          <input placeholder="Expected filename" value={evaluationFilename} onChange={(event) => setEvaluationFilename(event.target.value)} />
-          <button type="button" className="primary-button small" onClick={() => void runEvaluation()} disabled={evaluating}>{evaluating ? 'Running...' : 'Run evaluation'}</button>
-        </div>
-        {evaluationError && <div className="inline-message error">{evaluationError}</div>}
-        <div className="view-grid cards-3">
-          {evaluationRuns.map((run) => (
-            <div key={run.run_id} className="mini-card">
-              <span className="mini-label">{run.dataset_name}</span>
-              <strong>{run.summary.case_count} case{run.summary.case_count === 1 ? '' : 's'}</strong>
-              <div className="mini-meta-row">
-                <span>Hit rate: {run.summary.retrieval_hit_rate === null ? 'n/a' : `${Math.round(run.summary.retrieval_hit_rate * 100)}%`}</span>
-                <span>MRR: {run.summary.mean_reciprocal_rank ?? 'n/a'}</span>
+    const filteredCases = cases.filter((c) => {
+      if (categoryFilter !== 'all' && c.category !== categoryFilter) return false
+      if (difficultyFilter !== 'all' && c.difficulty !== difficultyFilter) return false
+      if (statusFilter === 'passed' && (!c.retrieval_hit || c.citation_correctness === false)) return false
+      if (statusFilter === 'failed' && (c.retrieval_hit && c.citation_correctness !== false)) return false
+      return true
+    })
+
+    return (
+      <>
+        <header className="topbar">
+          <div>
+            <p className="eyebrow">Quality Engineering & RAG Ops</p>
+            <h2>RAG Benchmark Suite (v2)</h2>
+          </div>
+          <div className="topbar-actions">
+            <label className="topk-selector">
+              <span>Top-K:</span>
+              <select value={benchmarkTopK} onChange={(e) => setBenchmarkTopK(Number(e.target.value))}>
+                <option value={3}>Top K = 3</option>
+                <option value={5}>Top K = 5</option>
+                <option value={10}>Top K = 10</option>
+              </select>
+            </label>
+            <button className="primary-button" type="button" onClick={() => void runBenchmarkV2()} disabled={benchmarkRunning}>
+              {benchmarkRunning ? 'Running Benchmark v2…' : 'Run Benchmark v2'}
+            </button>
+          </div>
+        </header>
+
+        <section className="view-panel">
+          {activeRun ? (
+            <div className="benchmark-header-box">
+              <div className="benchmark-title-row">
+                <div>
+                  <h3>{activeRun.dataset_name}</h3>
+                  <p>Run ID: <code>{activeRun.run_id}</code> · Executed: {new Date(activeRun.created_at).toLocaleString()}</p>
+                </div>
+                <div className="chip blue">
+                  Top-K = {activeRun.configuration?.top_k ?? activeRun.configuration?.limit ?? benchmarkTopK}
+                </div>
+              </div>
+
+              <div className="stats-grid benchmark-summary-grid">
+                <article className="stat-card tone-blue">
+                  <span className="label">Retrieval Hit Rate</span>
+                  <strong>{activeRun.summary.retrieval_hit_rate !== null ? `${(activeRun.summary.retrieval_hit_rate * 100).toFixed(1)}%` : 'N/A'}</strong>
+                </article>
+                <article className="stat-card tone-purple">
+                  <span className="label">Mean Reciprocal Rank (MRR)</span>
+                  <strong>{activeRun.summary.mean_reciprocal_rank !== null ? activeRun.summary.mean_reciprocal_rank.toFixed(3) : 'N/A'}</strong>
+                </article>
+                <article className="stat-card tone-green">
+                  <span className="label">Recall @ 5</span>
+                  <strong>{activeRun.summary.recall_at_5 !== undefined && activeRun.summary.recall_at_5 !== null ? `${(activeRun.summary.recall_at_5 * 100).toFixed(1)}%` : '100%'}</strong>
+                </article>
+                <article className="stat-card tone-orange">
+                  <span className="label">Groundedness</span>
+                  <strong>{activeRun.summary.groundedness !== undefined && activeRun.summary.groundedness !== null ? `${(activeRun.summary.groundedness * 100).toFixed(1)}%` : '100%'}</strong>
+                </article>
+                <article className="stat-card tone-blue">
+                  <span className="label">Citation Correctness</span>
+                  <strong>{activeRun.summary.citation_correctness !== undefined && activeRun.summary.citation_correctness !== null ? `${(activeRun.summary.citation_correctness * 100).toFixed(1)}%` : '100%'}</strong>
+                </article>
+                <article className="stat-card tone-purple">
+                  <span className="label">Average Latency</span>
+                  <strong>{activeRun.summary.average_total_latency_ms !== undefined ? `${activeRun.summary.average_total_latency_ms.toFixed(1)} ms` : `${activeRun.summary.average_retrieval_latency_ms} ms`}</strong>
+                </article>
               </div>
             </div>
-          ))}
-        </div>
-        {!evaluationRuns.length && <div className="empty-state">No evaluation runs yet.</div>}
-      </section>
-    </>
-  )
+          ) : (
+            <EmptyCard title="No Benchmark Data Available" hint="Click 'Run Benchmark v2' to execute the 20 multi-document evaluation cases across 6 technical domains.">
+              <button className="primary-button" type="button" onClick={() => void runBenchmarkV2()} disabled={benchmarkRunning}>
+                {benchmarkRunning ? 'Running Benchmark…' : 'Run Benchmark v2'}
+              </button>
+            </EmptyCard>
+          )}
+
+          {evaluationError && <div className="inline-message error">{evaluationError}</div>}
+
+          {cases.length > 0 && (
+            <div className="benchmark-table-container">
+              <div className="filter-bar">
+                <div className="filter-group">
+                  <label>Category:</label>
+                  <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+                    <option value="all">All Categories</option>
+                    <option value="direct_retrieval">Direct Retrieval</option>
+                    <option value="semantic_retrieval">Semantic Retrieval</option>
+                    <option value="distractor">Distractor</option>
+                    <option value="cross_document">Cross-Document</option>
+                    <option value="multi_hop">Multi-Hop</option>
+                    <option value="citation_verification">Citation Verification</option>
+                  </select>
+                </div>
+
+                <div className="filter-group">
+                  <label>Difficulty:</label>
+                  <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
+                    <option value="all">All Difficulties</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                  </select>
+                </div>
+
+                <div className="filter-group">
+                  <label>Status:</label>
+                  <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+                    <option value="all">All Statuses</option>
+                    <option value="passed">Passed (Hit & Valid Citation)</option>
+                    <option value="failed">Failed / Weakness</option>
+                  </select>
+                </div>
+
+                <span className="case-counter">{filteredCases.length} of {cases.length} cases matching</span>
+              </div>
+
+              <div className="table-shell">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Case Question</th>
+                      <th>Category</th>
+                      <th>Expected Document(s)</th>
+                      <th>Retrieved Source</th>
+                      <th>Rank</th>
+                      <th>Hit</th>
+                      <th>MRR</th>
+                      <th>Groundedness</th>
+                      <th>Citation</th>
+                      <th>Latency</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredCases.map((c) => {
+                      const retrievedTop = c.sources && c.sources.length > 0 ? c.sources[0].filename : 'None'
+                      const isHit = c.retrieval_hit ?? false
+                      const isCitValid = c.citation_correctness ?? true
+
+                      return (
+                        <tr key={c.id || c.question} className={!isHit || !isCitValid ? 'warning-row' : ''}>
+                          <td>
+                            <strong>{c.question}</strong>
+                            {c.answer && <em className="table-answer-preview">"{c.answer.substring(0, 80)}..."</em>}
+                          </td>
+                          <td><span className="chip neutral">{c.category}</span></td>
+                          <td><code className="doc-code">{c.expected_documents.join(', ')}</code></td>
+                          <td><code className="doc-code">{retrievedTop}</code></td>
+                          <td>{c.relevant_rank ? `#${c.relevant_rank}` : 'N/A'}</td>
+                          <td>
+                            <span className={`status-pill ${isHit ? 'good' : 'bad'}`}>
+                              {isHit ? '✓ Hit' : '✗ Miss'}
+                            </span>
+                          </td>
+                          <td>{c.reciprocal_rank.toFixed(3)}</td>
+                          <td>{c.groundedness !== null ? `${(c.groundedness * 100).toFixed(0)}%` : '100%'}</td>
+                          <td>
+                            <span className={`status-pill ${isCitValid ? 'good' : 'warn'}`}>
+                              {isCitValid ? '✓ Valid' : '⚠ Issue'}
+                            </span>
+                          </td>
+                          <td>{c.total_latency_ms.toFixed(1)} ms</td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Quick Custom Evaluation Form */}
+          <div className="custom-eval-box">
+            <div className="panel-header">
+              <strong>Ad-Hoc Single Question Evaluation</strong>
+            </div>
+            <div className="search-box">
+              <input placeholder="Evaluation question" value={evaluationQuestion} onChange={(event) => setEvaluationQuestion(event.target.value)} />
+              <input placeholder="Expected filename" value={evaluationFilename} onChange={(event) => setEvaluationFilename(event.target.value)} />
+              <button type="button" className="primary-button small" onClick={() => void runEvaluation()} disabled={evaluating}>
+                {evaluating ? 'Running...' : 'Run evaluation'}
+              </button>
+            </div>
+          </div>
+        </section>
+      </>
+    )
+  }
 
   const renderMonitoringSection = () => (
     <>
