@@ -1,12 +1,17 @@
 # KnowledgeOps — AI Knowledge Infrastructure & RAG Platform
 
 > **Project 2 in AI Engineering Portfolio**  
-> KnowledgeOps is an AI knowledge infrastructure platform for ingesting, indexing, retrieving, reranking, and evaluating technical document knowledge.
+> KnowledgeOps is an AI knowledge infrastructure platform for ingesting,
+> indexing, retrieving, reranking, and evaluating technical document
+> knowledge.
 
->The system combines document processing, vector retrieval, MMR-based reranking, grounded generation, citation validation, automated RAG evaluation, >observability, and reliability mechanisms into a single web-based platform.
+The system combines document processing, vector retrieval, MMR-based
+reranking, grounded generation, citation validation, automated RAG
+evaluation, observability, and reliability mechanisms into a single
+web-based platform.
 
->Rather than focusing only on question answering, KnowledgeOps treats RAG as an engineering system that can be measured, inspected, evaluated, and improved.
-
+Rather than focusing only on question answering, KnowledgeOps treats RAG
+as an engineering system that can be measured, inspected, and improved.
 ---
 
 ## 📊 RAG Benchmark Dataset v2 Results (30 Cases across 6 Technical Domains)
