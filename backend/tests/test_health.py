@@ -1,7 +1,17 @@
+from datetime import datetime, timezone
+
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.storage import load_documents, save_document
+from app import storage
+from app.storage import (
+    get_operation_metrics,
+    get_request_metrics,
+    load_documents,
+    save_document,
+    save_operation_event,
+    save_request_event,
+)
 
 client = TestClient(app)
 
@@ -18,6 +28,83 @@ def test_service_health_endpoint() -> None:
     assert response.status_code == 200
     assert response.json()["api"] == "operational"
     assert "qdrant" in response.json()
+
+
+def test_database_status_checks_existing_database_read_only(monkeypatch, tmp_path) -> None:
+    database = tmp_path / "knowledgeops.db"
+    monkeypatch.setenv("DATABASE_PATH", str(database))
+    storage.initialize_storage()
+
+    assert storage.database_status() == "operational"
+
+
+def test_database_status_does_not_create_missing_database(monkeypatch, tmp_path) -> None:
+    database = tmp_path / "missing.db"
+    monkeypatch.setenv("DATABASE_PATH", str(database))
+
+    assert storage.database_status() == "unavailable"
+    assert not database.exists()
+
+
+def test_request_metrics_summarize_status_endpoints_and_hourly_rate(monkeypatch, tmp_path) -> None:
+    monkeypatch.setenv("DATABASE_PATH", str(tmp_path / "request-metrics.db"))
+    timestamp = datetime.now(timezone.utc).isoformat()
+    save_request_event({
+        "request_id": "request-ok",
+        "method": "POST",
+        "path": "/search",
+        "status_code": 200,
+        "latency_ms": 12.5,
+        "created_at": timestamp,
+    })
+    save_request_event({
+        "request_id": "request-failed",
+        "method": "POST",
+        "path": "/ask",
+        "status_code": 502,
+        "latency_ms": 25.0,
+        "created_at": timestamp,
+    })
+
+    metrics = get_request_metrics()
+
+    assert metrics["requests"] == 2
+    assert metrics["successes"] == 1
+    assert metrics["errors"] == 1
+    assert metrics["status_distribution"] == {"200": 1, "502": 1}
+    assert metrics["requests_last_hour"] == 2
+    assert metrics["request_rate_per_minute_last_hour"] == round(2 / 60, 3)
+    assert metrics["by_endpoint"][0]["path"] in {"/search", "/ask"}
+    assert metrics["recent_failures"][0]["request_id"] == "request-failed"
+
+
+def test_operation_metrics_persist_stage_timings(monkeypatch, tmp_path) -> None:
+    monkeypatch.setenv("DATABASE_PATH", str(tmp_path / "operation-metrics.db"))
+    save_operation_event({
+        "request_id": "operation-search",
+        "operation": "search",
+        "provider": "openai",
+        "model": "embedding-model",
+        "embedding_latency_ms": 2.0,
+        "vector_retrieval_latency_ms": 3.0,
+        "reranking_latency_ms": 4.0,
+        "generation_latency_ms": None,
+        "total_latency_ms": 9.0,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+
+    metrics = get_operation_metrics()
+
+    assert metrics["operations"] == 1
+    assert metrics["by_operation"] == [{
+        "operation": "search",
+        "count": 1,
+        "average_embedding_latency_ms": 2.0,
+        "average_vector_retrieval_latency_ms": 3.0,
+        "average_reranking_latency_ms": 4.0,
+        "average_generation_latency_ms": None,
+        "average_total_latency_ms": 9.0,
+    }]
 
 
 def test_upload_pdf_document() -> None:
@@ -271,4 +358,8 @@ def test_request_metrics_track_errors_and_latency(monkeypatch, tmp_path) -> None
         "latency_ms": 30.0, "created_at": "2026-09-18T00:00:00+00:00",
     })
 
-    assert get_request_metrics() == {"requests": 2, "errors": 1, "success_rate": 0.5, "average_latency_ms": 20.0}
+    metrics = get_request_metrics()
+    assert metrics["requests"] == 2
+    assert metrics["errors"] == 1
+    assert metrics["success_rate"] == 0.5
+    assert metrics["average_latency_ms"] == 20.0

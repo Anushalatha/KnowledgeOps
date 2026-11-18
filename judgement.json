@@ -1,0 +1,11 @@
+{
+  "query_id": "Q001",
+  "query": "What are the main stages of a RAG ingestion and query pipeline?",
+  "relevant_chunks": {
+    "bf18d2f3-42d5-404b-a07e-2f4efbbbb8e7:0": 3,
+    "77a6bd5c-42ac-433a-bf29-3e04eb151c86:0": 3,
+    "77a6bd5c-42ac-433a-bf29-3e04eb151c86:1": 2,
+    "77a6bd5c-42ac-433a-bf29-3e04eb151c86:2": 2,
+    "77a6bd5c-42ac-433a-bf29-3e04eb151c86:3": 2
+  }
+}

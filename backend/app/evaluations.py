@@ -9,6 +9,43 @@ from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
+EVALUATION_VERSION = "document-match-v2"
+SCORING_DEFINITIONS = {
+    "retrieval_hit_rate": (
+        "Target-match hit rate. An expected-document case is a hit when at least one "
+        "expected document appears in the ranked results; it does not require all "
+        "expected documents and is not a semantic relevance judgment."
+    ),
+    "mean_reciprocal_rank": (
+        "Reciprocal rank of the first matching expected document or explicitly "
+        "targeted document/chunk identifier; not the first semantically relevant chunk."
+    ),
+    "recall_at_k": (
+        "Unique expected document filenames found in the top K divided by the number "
+        "of expected documents. Not applicable when no expected documents are supplied."
+    ),
+    "precision_at_k": (
+        "Returned top-K chunks whose filename matches an expected document divided "
+        "by returned top-K chunks. Not applicable when no expected documents are supplied."
+    ),
+    "answer_relevance": (
+        "Heuristic question/expected-topic keyword coverage. expected_answer is not "
+        "used by this scorer; this is not semantic or human-judged answer relevance."
+    ),
+    "groundedness": (
+        "Heuristic source-token overlap per answer sentence; not semantic entailment "
+        "or a guarantee that every claim is supported."
+    ),
+    "citation_correctness": (
+        "Citation index validity and expected-document coverage; does not verify "
+        "that each citation supports its adjacent claim."
+    ),
+    "insufficient_evidence_correctness": (
+        "For explicitly categorized insufficient-evidence cases, checks for the "
+        "supported abstention phrases. Retrieval metrics are not scored for these cases."
+    ),
+}
+
 
 class EvaluationCase(BaseModel):
     id: str | None = None
@@ -40,9 +77,7 @@ class EvaluationDatasetRequest(BaseModel):
 
 
 def _get_expected_docs(case: EvaluationCase) -> list[str]:
-    docs: list[str] = []
-    if case.expected_documents:
-        docs.extend(case.expected_documents)
+    docs = list(dict.fromkeys(case.expected_documents))
     if case.relevant_filename and case.relevant_filename not in docs:
         docs.append(case.relevant_filename)
     return docs
@@ -60,23 +95,41 @@ def _matches_target(source: dict[str, Any], case: EvaluationCase) -> bool:
     return matches_filename and matches_doc_id and matches_chunk_id
 
 
-def _calculate_recall_at_k(sources: list[dict[str, Any]], expected_docs: list[str], k: int) -> float:
+def _calculate_recall_at_k(
+    sources: list[dict[str, Any]],
+    expected_docs: list[str],
+    k: int,
+) -> float | None:
     if not expected_docs:
-        return 1.0
+        return None
     top_k_sources = sources[:k]
     retrieved_filenames = {s.get("filename") for s in top_k_sources if s.get("filename")}
     matched = set(expected_docs).intersection(retrieved_filenames)
     return round(len(matched) / len(expected_docs), 3)
 
 
-def _calculate_precision_at_k(sources: list[dict[str, Any]], expected_docs: list[str], k: int) -> float:
+def _calculate_precision_at_k(
+    sources: list[dict[str, Any]],
+    expected_docs: list[str],
+    k: int,
+) -> float | None:
+    if not expected_docs:
+        return None
     top_k_sources = sources[:k]
     if not top_k_sources:
         return 0.0
-    if not expected_docs:
-        return 1.0
     matching_sources = [s for s in top_k_sources if s.get("filename") in expected_docs]
     return round(len(matching_sources) / len(top_k_sources), 3)
+
+
+def _is_insufficient_evidence_answer(answer: str | None) -> bool:
+    if not answer:
+        return False
+    normalized_answer = answer.casefold()
+    return (
+        "don't have enough information" in normalized_answer
+        or "insufficient evidence" in normalized_answer
+    )
 
 
 def _answer_coverage(answer: str, expected: str) -> float:
@@ -226,6 +279,10 @@ async def run_evaluation(
 
     for case in request.cases:
         expected_docs = _get_expected_docs(case)
+        has_target = _targeted(case)
+        is_insufficient_evidence_case = (
+            case.category == "insufficient_evidence" and not has_target
+        )
 
         # 1. Retrieval Stage
         retrieval_start = perf_counter()
@@ -233,9 +290,13 @@ async def run_evaluation(
         retrieval_ms = round((perf_counter() - retrieval_start) * 1000, 1)
 
         # 2. Retrieval Metrics
-        rank = next((idx for idx, src in enumerate(sources, 1) if _matches_target(src, case)), None)
-        is_hit = rank is not None if _targeted(case) else (len(expected_docs) == 0)
-        mrr = round(1 / rank, 3) if rank else (1.0 if not expected_docs else 0.0)
+        rank = (
+            next((idx for idx, src in enumerate(sources, 1) if _matches_target(src, case)), None)
+            if has_target
+            else None
+        )
+        is_hit = rank is not None if has_target else None
+        mrr = round(1 / rank, 3) if rank else (0.0 if has_target else None)
 
         recall_3 = _calculate_recall_at_k(sources, expected_docs, 3)
         recall_5 = _calculate_recall_at_k(sources, expected_docs, 5)
@@ -249,15 +310,33 @@ async def run_evaluation(
         unsupported_claims: int = 0
         citation_check: dict[str, Any] = {"valid": None, "reason": None}
         relevance_data: dict[str, Any] = {"relevance_score": None, "reason": None, "missing_aspects": []}
+        insufficient_evidence_correctness: bool | None = None
 
         if request.generate_answers:
             gen_start = perf_counter()
             answer = await generate(case.question, sources)
             answer_ms = round((perf_counter() - gen_start) * 1000, 1)
 
-            groundedness, unsupported_claims = _calculate_groundedness(answer, sources)
-            citation_check = _verify_citations(answer, sources, expected_docs)
-            relevance_data = _evaluate_answer_relevance(case.question, answer, case.expected_answer, case.expected_topics)
+            if is_insufficient_evidence_case:
+                insufficient_evidence_correctness = _is_insufficient_evidence_answer(answer)
+                citation_check = {
+                    "valid": None,
+                    "reason": "Not applicable to an insufficient-evidence case.",
+                }
+                relevance_data = {
+                    "relevance_score": None,
+                    "reason": "Scored separately as insufficient-evidence correctness.",
+                    "missing_aspects": [],
+                }
+            else:
+                groundedness, unsupported_claims = _calculate_groundedness(answer, sources)
+                citation_check = _verify_citations(answer, sources, expected_docs)
+                relevance_data = _evaluate_answer_relevance(
+                    case.question,
+                    answer,
+                    case.expected_answer,
+                    case.expected_topics,
+                )
 
         results.append({
             "id": case.id or case.question[:30],
@@ -269,6 +348,13 @@ async def run_evaluation(
             "relevant_rank": rank,
             "retrieval_hit": is_hit,
             "reciprocal_rank": mrr,
+            "target_type": (
+                "expected_document"
+                if expected_docs
+                else "exact_identifier"
+                if case.relevant_document_id or case.relevant_chunk_id
+                else "untargeted"
+            ),
             "recall_at_3": recall_3,
             "recall_at_5": recall_5,
             "precision_at_3": precision_3,
@@ -277,6 +363,7 @@ async def run_evaluation(
             "answer_relevance": relevance_data["relevance_score"],
             "relevance_reason": relevance_data["reason"],
             "missing_aspects": relevance_data["missing_aspects"],
+            "insufficient_evidence_correctness": insufficient_evidence_correctness,
             "groundedness": groundedness,
             "unsupported_claim_count": unsupported_claims,
             "citation_correctness": citation_check["valid"],
@@ -288,19 +375,30 @@ async def run_evaluation(
         })
 
     targeted = [item for item in results if item["retrieval_hit"] is not None]
+    expected_document_cases = [
+        item for item in results
+        if item["target_type"] == "expected_document"
+    ]
     answer_scores = [item["answer_relevance"] for item in results if item["answer_relevance"] is not None]
     groundedness_scores = [item["groundedness"] for item in results if item["groundedness"] is not None]
     citation_scores = [item["citation_correctness"] for item in results if item["citation_correctness"] is not None]
+    abstention_scores = [
+        item["insufficient_evidence_correctness"]
+        for item in results
+        if item["insufficient_evidence_correctness"] is not None
+    ]
 
     hit_rate = round(sum(1.0 if item["retrieval_hit"] else 0.0 for item in targeted) / len(targeted), 3) if targeted else None
     mean_mrr = round(sum(item["reciprocal_rank"] for item in targeted) / len(targeted), 3) if targeted else None
-    mean_rec_3 = round(sum(item["recall_at_3"] for item in targeted) / len(targeted), 3) if targeted else None
-    mean_rec_5 = round(sum(item["recall_at_5"] for item in targeted) / len(targeted), 3) if targeted else None
-    mean_prec_3 = round(sum(item["precision_at_3"] for item in targeted) / len(targeted), 3) if targeted else None
-    mean_prec_5 = round(sum(item["precision_at_5"] for item in targeted) / len(targeted), 3) if targeted else None
+    mean_rec_3 = round(sum(item["recall_at_3"] for item in expected_document_cases) / len(expected_document_cases), 3) if expected_document_cases else None
+    mean_rec_5 = round(sum(item["recall_at_5"] for item in expected_document_cases) / len(expected_document_cases), 3) if expected_document_cases else None
+    mean_prec_3 = round(sum(item["precision_at_3"] for item in expected_document_cases) / len(expected_document_cases), 3) if expected_document_cases else None
+    mean_prec_5 = round(sum(item["precision_at_5"] for item in expected_document_cases) / len(expected_document_cases), 3) if expected_document_cases else None
 
     return {
         "run_id": str(uuid4()),
+        "evaluation_version": EVALUATION_VERSION,
+        "scoring_definitions": SCORING_DEFINITIONS,
         "dataset_name": request.dataset_name,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "configuration": {
@@ -313,6 +411,8 @@ async def run_evaluation(
         },
         "summary": {
             "case_count": len(results),
+            "targeted_case_count": len(targeted),
+            "expected_document_case_count": len(expected_document_cases),
             "retrieval_hit_rate": hit_rate,
             "mean_reciprocal_rank": mean_mrr,
             "recall_at_3": mean_rec_3,
@@ -322,9 +422,14 @@ async def run_evaluation(
             "answer_relevance": round(sum(answer_scores) / len(answer_scores), 3) if answer_scores else None,
             "groundedness": round(sum(groundedness_scores) / len(groundedness_scores), 3) if groundedness_scores else None,
             "citation_correctness": round(sum(1.0 if s else 0.0 for s in citation_scores) / len(citation_scores), 3) if citation_scores else None,
-            "average_embedding_latency_ms": round(sum(item["retrieval_latency_ms"] * 0.4 for item in results) / len(results), 1),
+            "insufficient_evidence_correctness": (
+                round(sum(1.0 if score else 0.0 for score in abstention_scores) / len(abstention_scores), 3)
+                if abstention_scores
+                else None
+            ),
+            "average_embedding_latency_ms": None,
             "average_retrieval_latency_ms": round(sum(item["retrieval_latency_ms"] for item in results) / len(results), 1),
-            "average_reranking_latency_ms": round(sum(item["retrieval_latency_ms"] * 0.3 for item in results) / len(results), 1),
+            "average_reranking_latency_ms": None,
             "average_answer_latency_ms": round(sum(item.get("answer_latency_ms") or 0.0 for item in results) / len(results), 1),
             "average_total_latency_ms": round(sum(item["total_latency_ms"] for item in results) / len(results), 1),
         },

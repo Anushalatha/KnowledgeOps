@@ -8,11 +8,11 @@ services:
     volumes:
       - qdrant_storage:/qdrant/storage
     healthcheck:
-      test: ["CMD-SHELL", "wget -q --spider http://localhost:6333/readyz"]
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/6333'"]
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 10s
+      start_period: 20s
 
   backend:
     build:
@@ -23,10 +23,12 @@ services:
     environment:
       QDRANT_URL: http://qdrant:6333
       DATABASE_PATH: /data/knowledgeops.db
+      HUMAN_JUDGMENTS_PATH: /app/judgement.json
     ports:
       - "8000:8000"
     volumes:
       - backend_data:/data
+      - ./judgement.json:/app/judgement.json:ro
     depends_on:
       qdrant:
         condition: service_healthy
@@ -42,16 +44,16 @@ services:
       context: ./frontend
     restart: unless-stopped
     ports:
-      - "5173:80"
+      - "${FRONTEND_PORT:-5174}:80"
     depends_on:
       backend:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget -q --spider http://localhost/ || exit 1"]
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1/ || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 10s
+      start_period: 20s
 
 volumes:
   backend_data:

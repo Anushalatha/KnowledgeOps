@@ -1,0 +1,158 @@
+{
+  "total_unmatched_points": 9,
+  "points": [
+    {
+      "point_id": "29878261-ff4f-532e-adf4-3fce050c592e",
+      "payload": {
+        "document_id": "bf18d2f3-42d5-404b-a07e-2f4efbbbb8e7",
+        "filename": "knowledgeops_rag_sample.pdf",
+        "chunk_id": "bf18d2f3-42d5-404b-a07e-2f4efbbbb8e7:0",
+        "chunk_index": 0,
+        "text": "KnowledgeOps Sample Knowledge Base RAG Systems: Architecture, Retrieval, Evaluation and Reliability This sample document is designed for testing the KnowledgeOps RAG pipeline. It contains intentionally structured technical information that can be retrieved and cited by page number. 1. What is Retrieval-Augmented Generation? Retrieval-Augmented Generation (RAG) combines information retrieval with a large language model. Instead of relying only on information encoded in model parameters, the system retrieves relevant external content and provides that content to the model as context before generating an answer. 2. RAG Architecture A typical RAG system contains a document ingestion pipeline and a query pipeline. The ingestion pipeline extracts text, splits documents into chunks, generates embeddings, and stores vectors with metadata. The query pipeline embeds the user question, retrieves candidate chunks, optionally reranks them, constructs context, and sends the context to an LLM. 3. Document Ingestion Document ingestion begins with validation. The system should check file type, file size, and whether meaningful text can be extracted. PDF documents can be processed page by page so that page metadata is preserved. Preserving document ID, filename, page number, and chunk ID makes later source citation possible. 4. Chunking Chunking divides a large document into smaller passages suitable for embedding and retrieval. A fixed character or token size can be used as a baseline, but chunk boundaries should ideally respect paragraphs, sections, tables, or other semantic boundaries. Chunk overlap can help preserve context between adjacent passages. 5. Embeddings An embedding model converts text into a numerical vector representing semantic information. Text passages with related meanings tend to have vectors that are closer together according to a chosen similarity measure. Both document chunks and user queries must be embedded using a compatible embedding model. 6. Vector Search The vector database stores embeddings together with their source metadata. During a query, the question embedding is compared with stored vectors and the highest-scoring candidates are returned. The number of candidates retrieved is commonly controlled with a Top-K parameter. 7. Reranking Vector search provides a candidate set, but the initial ranking may not always produce the best context for generation. A reranker can examine the query and candidate passages together and reorder them. A common pipeline is vector search for broad candidate retrieval followed by reranking to select a smaller high-quality context set. 8. Grounded Generation The generation stage receives the user's question and retrieved context. The system prompt should instruct the LLM to rely on the supplied evidence, avoid unsupported claims, and indicate when the retrieved information is insufficient. This reduces the risk of presenting unsupported statements as facts. 9. Source Citations A production RAG system should preserve source metadata throughout the pipeline. An answer can then cite the originating document and page. Source citations improve traceability because users can inspect the evidence used to construct an answer. 10. RAG Evaluation RAG evaluation should separately examine retrieval and generation. Retrieval evaluation can measure whether relevant passages were returned. Generation evaluation can examine answer relevance and whether claims are supported by the retrieved context. Citation correctness is another useful metric. 11. Observability Important RAG telemetry includes request ID, total latency, retrieval latency, reranking latency, LLM latency, number of retrieved chunks, retrieval scores, token usage, estimated cost, and errors. Structured logs should make it possible to trace a request across the pipeline. 12. Reliability AI systems depend on multiple external and internal components, so failures should be expected. Useful reliability mechanisms include request timeouts, bounded retries, exponential backoff, health checks, rate limiting, and graceful error responses. Permanent errors should not be retried indefinitely. 13. Example Production Flow A production-oriented flow can be summarized as: user question → validation → query embedding → vector retrieval → reranking → context construction → LLM generation → citation assembly → response. Each stage should have measurable latency and failure behavior.",
+        "source_type": "pdf",
+        "document_name": "knowledgeops_rag_sample.pdf",
+        "content_hash": "09729b06d3e685c2c9cc3fb21e5744161718cc3ce2ba3594fe53a501a0d23017",
+        "project_name": "unknown",
+        "category": "unknown",
+        "page_number": "unknown",
+        "uploaded_at": "unknown"
+      }
+    },
+    {
+      "point_id": "2ef0bc1a-3db7-50d0-9a8f-645a22e0981c",
+      "payload": {
+        "document_id": "dd81bc04-c084-4813-9f7d-581de7a47ad0",
+        "filename": "regis final year project plan.pdf",
+        "chunk_id": "dd81bc04-c084-4813-9f7d-581de7a47ad0:0",
+        "chunk_index": 0,
+        "text": "EDIS: Enterprise Decision Intelligence System An AI-Powered Platform for Predictive Analytics, Risk Assessment, and Intelligent Project Governance Research Paper Title \"EDIS: A Multi-Agent Retrieval-Augmented Decision Intelligence Framework for Predictive Enterprise Governance and Strategic Decision Support\" 1. Introduction Modern enterprises generate vast amounts of structured and unstructured data through project documents, reports, emails, meeting notes, resource records, and operational systems. Despite this abundance of information, decision-makers often struggle to extract actionable insights quickly and accurately. Traditional project management and enterprise analytics tools primarily provide historical reporting rather than intelligent decision support. This results in delayed risk identification, inefficient resource allocation, project overruns, and reactive management practices. The proposed EDIS (Enterprise Decision Intelligence System) leverages Artificial Intelligence, Retrieval-Augmented Generation (RAG), Predictive Analytics, Multi-Agent Systems, and Explainable AI to create an intelligent enterprise decision-support ecosystem. 2. Abstract EDIS is an AI-powered Enterprise Decision Intelligence System designed to transform organizational decision-making through predictive insights, knowledge intelligence, and automated recommendations. The platform integrates enterprise document understanding, project risk prediction, resource optimization, intelligent reporting, and explainable decision support into a unified framework. By combining RAG-based knowledge retrieval, machine learning forecasting models, and autonomous AI agents, EDIS enables organizations to proactively identify risks, optimize operations, improve project outcomes, and support strategic planning through data-driven intelligence. 3. Problem Statement Organizations face several challenges in project and operational management: ● Critical information is distributed across multiple documents and systems. ● Project risks are often identified only after delays occur.",
+        "source_type": "pdf",
+        "document_name": "regis final year project plan.pdf",
+        "content_hash": "98b6e9bd78b242b3e11102bb16cf95d154a61ac9761183525de6fe50ae5e0a28",
+        "project_name": "unknown",
+        "category": "unknown",
+        "page_number": "unknown",
+        "uploaded_at": "unknown"
+      }
+    },
+    {
+      "point_id": "3c096709-68dc-5c87-ba42-15b19d38e948",
+      "payload": {
+        "document_id": "dd81bc04-c084-4813-9f7d-581de7a47ad0",
+        "filename": "regis final year project plan.pdf",
+        "chunk_id": "dd81bc04-c084-4813-9f7d-581de7a47ad0:4",
+        "chunk_index": 4,
+        "text": "● Reduced operational costs. ● Improved governance and transparency. 👥 For Teams ● Better workload distribution. ● Increased productivity. ● Reduced project delays. 📊 For Executives ● Strategic visibility into enterprise performance. ● Data-driven planning and forecasting. ● Automated reporting and insights. 11. Future Scope 🚀 GraphRAG-based Enterprise Knowledge Networks 🚀 Digital Twin for Project Simulation 🚀 Voice-Enabled Executive Assistant 🚀 Autonomous Project Governance Agents 🚀 Predictive Budget Optimization 🚀 Cross-Enterprise Decision Intelligence Platform 🚀 Integration with Large Enterprise ERP Systems 🚀 Reinforcement Learning for Adaptive Decision Making 12. Conclusion EDIS redefines enterprise project and operational management by shifting from traditional reporting systems to intelligent decision orchestration. Through AI-driven knowledge retrieval, predictive forecasting, explainable recommendations, and autonomous decision-support agents, the platform enables organizations to make faster, smarter, and more transparent decisions. By integrating RAG, Predictive Analytics, Multi-Agent AI, and Explainable AI into a unified architecture, EDIS establishes a next-generation framework for enterprise intelligence and strategic governance.",
+        "source_type": "pdf",
+        "document_name": "regis final year project plan.pdf",
+        "content_hash": "c1338c95a165d4eaef886d45b3998f9dffd75bd1ce9e129b12d56b355db18d65",
+        "project_name": "unknown",
+        "category": "unknown",
+        "page_number": "unknown",
+        "uploaded_at": "unknown"
+      }
+    },
+    {
+      "point_id": "4bf44ec7-4be0-557b-998b-86e37c08709e",
+      "payload": {
+        "document_id": "dd81bc04-c084-4813-9f7d-581de7a47ad0",
+        "filename": "regis final year project plan.pdf",
+        "chunk_id": "dd81bc04-c084-4813-9f7d-581de7a47ad0:1",
+        "chunk_index": 1,
+        "text": "outcomes, and support strategic planning through data-driven intelligence. 3. Problem Statement Organizations face several challenges in project and operational management: ● Critical information is distributed across multiple documents and systems. ● Project risks are often identified only after delays occur. ● Resource allocation decisions lack predictive intelligence. ● Managers spend significant time preparing reports and analyzing project health. ● Existing project management tools focus on tracking rather than intelligent decision-making. ● Organizations lack explainable and transparent AI-driven recommendations for strategic planning. 4. Proposed Solution The EDIS platform addresses these challenges through the following components: Enterprise Knowledge Intelligence Engine ● Enterprise documents are processed and converted into an intelligent knowledge repository. ● Documents include project reports, requirement specifications, meeting minutes, SOPs, and operational guidelines. ● RAG enables contextual question-answering and knowledge retrieval. Predictive Risk Assessment Engine ● Machine learning models predict project delays, budget overruns, and operational risks. ● Early warning alerts are generated for high-risk projects. ● Risk scores continuously update based on project activity. Intelligent Resource Optimization Engine ● Analyzes workforce utilization and project assignments. ● Identifies resource bottlenecks and workload imbalances. ● Recommends optimal resource allocation strategies. Explainable Decision Recommendation Engine ● AI generates recommendations for project managers and executives. ● All recommendations include explainable reasoning and supporting evidence. ● Decision transparency improves trust and governance. 5. AI System Framework The platform employs multiple AI agents working collaboratively: Knowledge Retrieval Agent ● Retrieves information from enterprise documents using",
+        "source_type": "pdf",
+        "document_name": "regis final year project plan.pdf",
+        "content_hash": "79fd698f9e69fb463fee5647c91d8cf8efa166feb196926675c4eee97e33fc29",
+        "project_name": "unknown",
+        "category": "unknown",
+        "page_number": "unknown",
+        "uploaded_at": "unknown"
+      }
+    },
+    {
+      "point_id": "75ef729c-3720-5007-b1bd-24c1249788ed",
+      "payload": {
+        "document_id": "e83fa6c1-e974-4a28-894a-ac97312a3862",
+        "filename": "Anusha B Cover Letter (2).pdf",
+        "chunk_id": "e83fa6c1-e974-4a28-894a-ac97312a3862:0",
+        "chunk_index": 0,
+        "text": "Anusha B Platform Engineer Hiring Manager HCL Tech I am writing to express my interest in the Platform Engineer II position. With a background in Artificial Intelligence and Data Science and hands-on experience developing AI applications, machine learning systems, APIs, and Generative AI solutions, I am excited about the opportunity to contribute to the deployment and integration of AI and agentic solutions in customer environments. My experience closely aligns with the technical requirements of this role. During my AI/ML Developer internship at OneYes Infotech Solutions, I built and deployed machine learning models using FastAPI-based backend services, developed API endpoints for AI model integration, and worked on feature engineering, model evaluation, and system optimization. I also have practical experience with Generative AI, LLMs, RAG, embeddings, vector search, FAISS, and LangChain, along with Python, FastAPI, REST APIs, MongoDB, PostgreSQL, SQL, Docker, and other development tools. These skills have given me a strong foundation for implementing AI workflows, integrating models with backend services, and working with data and vector-based retrieval systems. My project experience has further strengthened my ability to build and integrate AI-driven systems. I have developed an AI-powered fashion intelligence platform involving visual understanding and personalized recommendations, as well as an AI-based athlete performance analytics system that transforms activity data into predictive insights and actionable recommendations. I am particularly interested in this role because it combines Generative AI, RAG pipelines, APIs, system integration, testing, debugging, and production-oriented engineering. I enjoy troubleshooting",
+        "source_type": "pdf",
+        "document_name": "Anusha B Cover Letter (2).pdf",
+        "content_hash": "45636884e2e23831620d95fdf4ba44943ea14527b6bf258d0ac3df08270d6711",
+        "project_name": "unknown",
+        "category": "unknown",
+        "page_number": "unknown",
+        "uploaded_at": "unknown"
+      }
+    },
+    {
+      "point_id": "8c3d8fb9-d51d-5c88-bbf3-85d2e41c030c",
+      "payload": {
+        "document_id": "dd81bc04-c084-4813-9f7d-581de7a47ad0",
+        "filename": "regis final year project plan.pdf",
+        "chunk_id": "dd81bc04-c084-4813-9f7d-581de7a47ad0:3",
+        "chunk_index": 3,
+        "text": "and project management tools. ● Integration with Jira, Trello, and Microsoft Project. ● Authentication using JWT and Role-Based Access Control. 7. User Experience (UX) Flow Project documents and enterprise data are uploaded into the platform. RAG engine processes and indexes organizational knowledge. ML models analyze project and operational metrics. AI agents generate risk forecasts and recommendations. Decision-makers access dashboards and insights. Automated reports and alerts are generated continuously. Organizations use recommendations to optimize project execution and resource utilization. 8. Key Features ✅ Enterprise Knowledge Assistant (RAG) ✅ Project Delay Prediction ✅ Risk Assessment Dashboard ✅ Resource Optimization Engine ✅ Explainable AI Recommendations ✅ Intelligent Decision Support ✅ Automated Executive Reporting ✅ Real-Time Project Monitoring ✅ Multi-Agent AI Architecture ✅ Strategic Planning Assistance 9. Competitive Analysis Feature EDIS Traditional PM Tools AI-Powered Knowledge Retrieval ✅ ❌ Project Delay Prediction ✅ Limited Resource Optimization ✅ ❌ Explainable AI Recommendations ✅ ❌ Automated Executive Reports ✅ Limited Multi-Agent Intelligence ✅ ❌ Predictive Risk Forecasting ✅ Limited Strategic Decision Support ✅ ❌ 10. Benefits and Impact 📈 For Project Managers ● Faster and more informed decision-making. ● Early identification of project risks. ● Improved resource planning. 🏢 For Organizations ● Higher project success rates. ● Reduced operational costs. ● Improved governance and transparency. 👥 For Teams ● Better workload distribution. ● Increased productivity. ● Reduced project delays. 📊 For Executives ● Strategic visibility into enterprise performance. ● Data-driven planning and forecasting. ● Automated reporting",
+        "source_type": "pdf",
+        "document_name": "regis final year project plan.pdf",
+        "content_hash": "97ad299e3e7b0b83c132dc27969cf7abe60c339b740f6d0db5b5db6cbb579ec5",
+        "project_name": "unknown",
+        "category": "unknown",
+        "page_number": "unknown",
+        "uploaded_at": "unknown"
+      }
+    },
+    {
+      "point_id": "aa1cb250-c8f4-55e3-8935-237df0e97072",
+      "payload": {
+        "document_id": "dd81bc04-c084-4813-9f7d-581de7a47ad0",
+        "filename": "regis final year project plan.pdf",
+        "chunk_id": "dd81bc04-c084-4813-9f7d-581de7a47ad0:2",
+        "chunk_index": 2,
+        "text": "and executives. ● All recommendations include explainable reasoning and supporting evidence. ● Decision transparency improves trust and governance. 5. AI System Framework The platform employs multiple AI agents working collaboratively: Knowledge Retrieval Agent ● Retrieves information from enterprise documents using RAG. Risk Prediction Agent ● Predicts project risks and delay probabilities. Resource Intelligence Agent ● Evaluates workforce utilization and allocation efficiency. Recommendation Agent ● Generates strategic recommendations for decision-makers. Executive Reporting Agent ● Produces automated reports, summaries, and performance insights. Learning Agent ● Continuously improves prediction accuracy using historical outcomes. 6. Technology Stack Frontend ● React.js with Tailwind CSS for enterprise dashboards. ● Recharts.js for performance and analytics visualizations. ● Role-based interfaces for executives, managers, and team members. Backend ● FastAPI for AI service orchestration. ● Node.js with Express.js for enterprise API integration. ● WebSockets for real-time project updates. Database ● MongoDB for operational and project data. ● PostgreSQL for structured business records. ● Neo4j for enterprise relationship intelligence (future enhancement). AI & Analytics ● Python-based ML models for forecasting and prediction. ● RAG framework for enterprise knowledge retrieval. ● LangChain and LangGraph for agent orchestration. ● Explainable AI tools for transparent decision support. Integration ● REST APIs for ERP and project management tools. ● Integration with Jira, Trello, and Microsoft Project. ● Authentication using JWT and Role-Based Access Control. 7. User Experience (UX) Flow Project documents and enterprise data are uploaded into the platform. RAG engine processes and indexes",
+        "source_type": "pdf",
+        "document_name": "regis final year project plan.pdf",
+        "content_hash": "0733ea576c5f77f9712f1797fc12059b25e6fa602b7d92df8a05aea8d14b1300",
+        "project_name": "unknown",
+        "category": "unknown",
+        "page_number": "unknown",
+        "uploaded_at": "unknown"
+      }
+    },
+    {
+      "point_id": "ad701390-ea48-56f6-aa37-f4cb9225eb61",
+      "payload": {
+        "document_id": "e83fa6c1-e974-4a28-894a-ac97312a3862",
+        "filename": "Anusha B Cover Letter (2).pdf",
+        "chunk_id": "e83fa6c1-e974-4a28-894a-ac97312a3862:1",
+        "chunk_index": 1,
+        "text": "AI-based athlete performance analytics system that transforms activity data into predictive insights and actionable recommendations. I am particularly interested in this role because it combines Generative AI, RAG pipelines, APIs, system integration, testing, debugging, and production-oriented engineering. I enjoy troubleshooting technical problems, understanding how different components work together, and building reliable solutions. I am also comfortable learning new frameworks and platforms and would be eager to deepen my experience with cloud environments, agent orchestration, monitoring, and responsible AI practices. In addition to my development experience, my research work in AI and conversational systems has strengthened my interest in emerging AI technologies. I have published research on AI-driven personalized fashion and on a hybrid reality-aware and swarm intelligent architecture for advanced conversational systems. I am a fast learner, proactive problem solver, and collaborative team member who is eager to work alongside experienced engineers and contribute to reliable AI deployments. I believe my combination of AI/ML knowledge, backend development experience, and hands-on exposure to Generative AI and RAG systems makes me a strong candidate for the Platform Engineer II position. Thank you for considering my application. I would welcome the opportunity to discuss how my skills and experience can contribute to your team. Anusha B Warmest regards, portfolio | LinkedIn | Github +91 6381260652 anushalathaaa7@gmail.com September 9 2026",
+        "source_type": "pdf",
+        "document_name": "Anusha B Cover Letter (2).pdf",
+        "content_hash": "0eaf1dfa37dff74cd9b67d6a80164bf529cb50297470c1b24b39304b2b69f984",
+        "project_name": "unknown",
+        "category": "unknown",
+        "page_number": "unknown",
+        "uploaded_at": "unknown"
+      }
+    },
+    {
+      "point_id": "fda1dd79-14af-5b1d-bbac-728ba185046e",
+      "payload": {
+        "document_id": "e83fa6c1-e974-4a28-894a-ac97312a3862",
+        "filename": "Anusha B Cover Letter (2).pdf",
+        "chunk_id": "e83fa6c1-e974-4a28-894a-ac97312a3862:2",
+        "chunk_index": 2,
+        "text": "team. Anusha B Warmest regards, portfolio | LinkedIn | Github +91 6381260652 anushalathaaa7@gmail.com September 9 2026",
+        "source_type": "pdf",
+        "document_name": "Anusha B Cover Letter (2).pdf",
+        "content_hash": "91ddb2d9639ff8bc65f49ed751f550519b13a290698cf49b20297274bc99f20b",
+        "project_name": "unknown",
+        "category": "unknown",
+        "page_number": "unknown",
+        "uploaded_at": "unknown"
+      }
+    }
+  ]
+}

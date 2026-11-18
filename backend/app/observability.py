@@ -20,6 +20,7 @@ logger.setLevel(logging.INFO)
 
 async def observe_request(request: Request, call_next):
     request_id = request.headers.get("X-Request-ID") or str(uuid4())
+    request.state.request_id = request_id
     started = perf_counter()
     status_code = 500
     try:

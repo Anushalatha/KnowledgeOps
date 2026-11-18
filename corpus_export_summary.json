@@ -1,0 +1,35 @@
+{
+  "collection": "knowledgeops_documents",
+  "sqlite_document_records": 13,
+  "qdrant_points": 161,
+  "exported_chunks": 152,
+  "matched_points": 152,
+  "unmatched_points": 9,
+  "chunks_with_unknown_project_metadata": 161,
+  "chunks_with_unknown_category_metadata": 161,
+  "exported_chunks_with_unknown_project_metadata": 152,
+  "exported_chunks_with_unknown_category_metadata": 152,
+  "missing_text_points": 0,
+  "missing_document_id_points": 0,
+  "missing_chunk_id_points": 0,
+  "content_hash_mismatches": 0,
+  "point_count_before_read": 161,
+  "point_count_after_read": 161,
+  "verification": {
+    "all_qdrant_points_accounted_for": true,
+    "all_exported_point_document_chunk_ids_and_text_round_trip": true,
+    "sqlite_opened_read_only": true,
+    "qdrant_vectors_requested": false,
+    "export_used_only_read_operations": true,
+    "csv_null_representation": "\\N",
+    "csv_literal_backslash_escape": "A literal string beginning with backslash is prefixed with one additional backslash.",
+    "metadata_status_note": "SQLite presence is reported; metadata was not independently human-verified."
+  },
+  "export_errors": [],
+  "output_paths": {
+    "document_inventory_csv": "H:\\passed out projects\\project 2\\KnowledgeOps\\corpus_document_inventory.csv",
+    "chunk_inventory_jsonl": "H:\\passed out projects\\project 2\\KnowledgeOps\\corpus_chunk_inventory.jsonl",
+    "unmatched_points_json": "H:\\passed out projects\\project 2\\KnowledgeOps\\unmatched_points.json",
+    "summary_json": "H:\\passed out projects\\project 2\\KnowledgeOps\\corpus_export_summary.json"
+  }
+}
