@@ -254,13 +254,13 @@ def test_search_response_includes_point_id_and_inspection_metadata(monkeypatch) 
     assert operation_events[0]["vector_retrieval_latency_ms"] >= 0
 
 
-def test_settings_response_does_not_expose_secrets(monkeypatch) -> None:
+def test_settings_response_does_not_expose_secrets(monkeypatch, tmp_path) -> None:
     secrets = {
         "LLM_API_KEY": "llm-secret-value",
         "EMBEDDING_API_KEY": "embedding-secret-value",
         "QDRANT_API_KEY": "qdrant-secret-value",
         "QDRANT_URL": "https://user:password@example.test:6333",
-        "DATABASE_PATH": "/private/path/database.sqlite",
+        "DATABASE_PATH": str(tmp_path / "private" / "database.sqlite"),
     }
     for key, value in secrets.items():
         monkeypatch.setenv(key, value)

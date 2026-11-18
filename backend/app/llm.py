@@ -71,6 +71,7 @@ async def generate_grounded_answer(question: str, sources: list[dict[str, Any]])
             response = await post_with_retry(
                 client,
                 f"https://generativelanguage.googleapis.com/v1beta/models/{llm_model()}:generateContent",
+                attempts=4,
                 params={"key": api_key},
                 json=payload,
             )
@@ -78,6 +79,10 @@ async def generate_grounded_answer(question: str, sources: list[dict[str, Any]])
         raise LLMProviderError("Gemini could not be reached.") from error
 
     if response.is_error:
+        if response.status_code == 503:
+            raise LLMProviderError(
+                "Gemini is temporarily unavailable (503) after retrying. Please try again shortly."
+            )
         raise LLMProviderError(
             f"Gemini rejected the request with status {response.status_code}."
         )
