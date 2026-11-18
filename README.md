@@ -13,22 +13,7 @@ Rather than focusing only on question answering, KnowledgeOps treats RAG
 as an engineering system that can be measured, inspected, and improved.
 
 ---
-## 📸 Screenshots
 
-### Dashboard
-![KnowledgeOps Dashboard](screenshots/dashboard.png)
-
-### Document Processing
-![Document Processing](screenshots/documents.png)
-
-### Semantic Search
-![Semantic Search](screenshots/search.png)
-
-### Answer with Citations
-![RAG Answer](screenshots/answer.png)
-
-### Monitoring
-![KnowledgeOps Monitoring](screenshots/monitoring.png)
 
 ## 🖼️ Platform Visual Interface & Screenshots
 
