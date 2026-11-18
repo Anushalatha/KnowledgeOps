@@ -17,17 +17,26 @@ as an engineering system that can be measured, inspected, and improved.
 
 ## 🖼️ Platform Visual Interface & Screenshots
 
-### 1. Quality Engineering & RAG Evaluation Suite
-![KnowledgeOps RAG Evaluation Suite](docs/screenshots/dashboard.png)
+### Dashboard
+![KnowledgeOps Dashboard](docs/screenshots/dashboard.png)
 
-### 2. Document Ingestion, Processing & Indexing
-![Document Ingestion & Management](docs/screenshots/documents.png)
+### Document Management
+![Document Management](docs/screenshots/documents.png)
 
-### 3. Vector Search & Reranking Inspection
-![Semantic Vector Search](docs/screenshots/search.png)
+### Collection Management
+![Collection Management](docs/screenshots/collection.png)
 
-### 4. Grounded RAG Q&A with Citation Verification
-![Grounded RAG Q&A](docs/screenshots/Query.png)
+### Search
+![Semantic Search](docs/screenshots/search.png)
+
+### Ask Knowledge Base
+![Knowledge Base Query](docs/screenshots/Query.png)
+
+### Monitoring
+![Monitoring Dashboard](docs/screenshots/monitoring.png)
+
+### Evaluation
+![Evaluation Dashboard](docs/screenshots/evaluation.png)
 
 ---
 
